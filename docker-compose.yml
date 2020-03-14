@@ -1,0 +1,14 @@
+version: '3'
+services:
+  dataserver:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./Library/:/srv/content
+      - ./data/:/code/data
+      - ./var/:/code/var
+

@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set username [lindex $argv 0]
+set password [lindex $argv 1]
+spawn svn export --username=$username https://repos.nextthought.com/svn/nti-svn/nti.app.contentlibrary/trunk/ /tmp/svntrash
+
+expect "Password for '$username': "
+send -- "$password\r"
+
+expect "Store password unencrypted (yes/no)?"
+send -- "yes\r"
