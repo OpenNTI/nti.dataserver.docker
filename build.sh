@@ -5,6 +5,7 @@ export DOCKER_BUILDKIT=1
 mkdir -p ./Library
 mkdir -p ./data
 mkdir -p ./var/log/
+mkdir -p ./var/caches/chameleon_cache/
 
 if [ ! -f ./.svnauth ]; then
     read -p "Subversion Username on https://repos.nextthought.com: " user
