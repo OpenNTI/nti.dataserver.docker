@@ -17,4 +17,4 @@ fi
 ssh-add -K ~/.ssh/id_rsa
 
 # docker-compose build
-docker build --secret id=svnauth,src=./.svnauth --ssh default . -t dataserver
+docker build --secret id=svnauth,src=./.svnauth --ssh default . -t nti-dataserver

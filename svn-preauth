@@ -8,3 +8,5 @@ send -- "$password\r"
 
 expect "Store password unencrypted (yes/no)?"
 send -- "yes\r"
+
+spawn rm -rf /tmp/svntrash

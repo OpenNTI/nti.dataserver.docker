@@ -1,10 +1,15 @@
 version: '3'
 services:
   dataserver:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    restart: unless-stopped
+    # This image does not exist on docker hub, nor any other registry... 
+    # must be built locally using the build script.
+    image: nti-dataserver:latest
+    depends_on: 
+      - "memcached"
+      - "redis"
+      - "nginx"
+    networks: 
+      - app-network
     ports:
       - "8082:8082"
     volumes:
@@ -12,3 +17,36 @@ services:
       - ./data/:/code/data
       - ./var/:/code/var
 
+  memcached:
+    image: memcached
+    container_name: memcached
+    networks: 
+      - app-network
+    expose:
+      - 11211
+  
+  redis:
+    image: redis
+    container_name: cache
+    networks:
+      - app-network
+    expose:
+      - 6379
+  
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+      # - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
