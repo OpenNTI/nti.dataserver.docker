@@ -32,6 +32,8 @@ services:
       - app-network
     expose:
       - 6379
+    sysctls:
+      net.core.somaxconn: 1024
   
   nginx:
     image: nginx
