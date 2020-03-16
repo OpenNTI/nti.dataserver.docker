@@ -8,13 +8,14 @@ services:
     depends_on: 
       - "memcached"
       - "redis"
-      - "nginx"
+      - "statsd"
     networks: 
       - app-network
-    ports:
-      - "8082:8082"
+    expose:
+      - 8081
     volumes:
-      - ./Library/:/srv/content
+      - ./Library/:/srv/Library
+      - ./SiteAssets/:/srv/SiteAssets
       - ./data/:/code/data
       - ./var/:/code/var
 
@@ -39,13 +40,23 @@ services:
   nginx:
     image: nginx
     container_name: nginx
+    depends_on:
+      - dataserver
     ports:
       - "80:80"
     networks:
       - app-network
     volumes:
-      - ./:/var/www
-      # - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./var/log/nginx:/var/log/nginx
+      - ./Library:/var/www/public/content/
+      - ./SiteAssets/:/var/www/public/site-assets/
+      - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
+
+  statsd:
+    image: statsd/statsd
+    container_name: statsd
+    networks: 
+      - app-network
 
 networks:
   app-network:

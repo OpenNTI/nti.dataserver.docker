@@ -20,13 +20,11 @@ RUN mkdir -p /root/.ssh/ \
     && touch /root/.ssh/known_hosts \
     && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-
-RUN --mount=type=ssh git clone git@github.com:NextThought/nti.dataserver-buildout.git /code
+RUN --mount=type=ssh git clone --depth=1 -b development git@github.com:NextThought/nti.dataserver-buildout.git /code
 WORKDIR /code
-RUN git checkout development
-COPY . .
+COPY ./docker.cfg ./docker.cfg
 
 RUN ./bootstrap.sh
 RUN --mount=type=ssh ./bin/buildout -c docker.cfg
 
-CMD ./bin/supervisord -n
+ENTRYPOINT rm -f ./var/*.{pid,sock}; exec ./bin/supervisord -n
