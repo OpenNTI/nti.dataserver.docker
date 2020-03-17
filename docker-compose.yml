@@ -14,13 +14,15 @@ services:
     expose:
       - 8081
     volumes:
-      - ./Library/:/srv/Library
-      - ./SiteAssets/:/srv/SiteAssets
+      - ./content/:/srv/content
+      - ./site-assets/:/srv/site-assets
       - ./data/:/code/data
-      - ./var/:/code/var
+      - ./var/caches:/code/var/caches
+      - ./var/log:/code/var/log
+      - ./var/maildir:/code/var/maildir
 
   memcached:
-    image: memcached
+    image: memcached:alpine
     container_name: memcached
     networks: 
       - app-network
@@ -28,17 +30,15 @@ services:
       - 11211
   
   redis:
-    image: redis
-    container_name: cache
+    image: redis:alpine
+    container_name: redis
     networks:
       - app-network
-    expose:
-      - 6379
     sysctls:
       net.core.somaxconn: 1024
   
   nginx:
-    image: nginx
+    image: nginx:alpine
     container_name: nginx
     depends_on:
       - dataserver

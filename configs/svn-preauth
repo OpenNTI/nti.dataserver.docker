@@ -1,12 +1,14 @@
-#!/usr/bin/expect -f
-set username [lindex $argv 0]
-set password [lindex $argv 1]
-spawn svn export --username=$username https://repos.nextthought.com/svn/nti-svn/nti.app.contentlibrary/trunk/ /tmp/svntrash
+#!/bin/bash
+mv /usr/bin/svn /usr/bin/_svn
 
-expect "Password for '$username': "
-send -- "$password\r"
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters"
+    exit 1
+fi
 
-expect "Store password unencrypted (yes/no)?"
-send -- "yes\r"
+cat > /usr/bin/svn <<EOF
+#!/bin/bash
+_svn "\$@" --username="$1" --password="$2"
+EOF
 
-spawn rm -rf /tmp/svntrash
+chmod +x /usr/bin/svn

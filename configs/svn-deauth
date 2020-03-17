@@ -1,0 +1,4 @@
+#!/bin/bash
+rm /usr/bin/svn
+mv /usr/bin/_svn /usr/bin/svn
+rm $0

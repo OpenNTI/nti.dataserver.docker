@@ -1,12 +1,17 @@
 # syntax=docker/dockerfile:1.0.0-experimental
 
+# FROM python:2-alpine
 FROM python:2
 EXPOSE 8081
 ENV PYTHONUNBUFFERED 1
 ENV VIRTUAL_ENV /usr/local
 
-RUN apt-get update
-RUN apt-get install git openssh-client expect -y
+# RUN apk update && apk upgrade && \
+#     apk add --no-cache \
+#     bash git subversion openssh \
+#     build-base libffi-dev openssl-dev mariadb-connector-c-dev libxslt-dev yaml-cpp-dev python2-dev
+
+RUN apt-get update && apt-get upgrade
 RUN pip install --upgrade pip setuptools
 
 # Make Subversion authenticate w/ the legacy repo so buildout can download 
@@ -27,4 +32,7 @@ COPY ./docker.cfg ./docker.cfg
 RUN ./bootstrap.sh
 RUN --mount=type=ssh ./bin/buildout -c docker.cfg
 
-ENTRYPOINT rm -f ./var/*.{pid,sock}; exec ./bin/supervisord -n
+COPY ./svn-deauth ./svn-deauth
+RUN ./svn-deauth
+
+ENTRYPOINT [ "/code/bin/supervisord", "-n" ]
