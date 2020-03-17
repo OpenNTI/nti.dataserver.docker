@@ -1,4 +1,4 @@
-# nti.dataserver-buildout [Docker Edition]
+# nti.dataserver [Docker Edition]
 
 ## Prerequisites
 
@@ -17,12 +17,16 @@ Open a terminal in the buildout working directory (on this branch) and execute:
 ./build.sh
 ```
 
-Once the container is built, you may start the server with `docker-compose up`. This will start the server and listen on 8081. Pressing `CTRL+C` will stop services.
+Once the container is built, you may start the server with `docker-compose up`(optionally `-d` to daemonize instead). This will start all the services and bind to the host's port `8082` (http). To stop the services press `CTRL+C`, or if its been daemonized, `docker-compose stop`.
 
-The web apps, in dev mode, will proxy requests from their instances to this port. SSL is handled by the dev-server. When you start a webapp it will tell you where it is listening.
+The web apps, in dev mode, will proxy requests from their instances to this port. HTTPS/SSL is handled by the dev-server since it will be the front-most listener. When you start a webapp it will tell you where it is listening.
 
 ---
 
 ## Additional
 
-To add content put content/site packages into the newly created `./Library` directory.
+To add content you may put it in the newly created `./content` directory.
+
+To view logs, look under `./var/log` or `./var/nginx-logs/`.
+
+Site data is stored under `./var/data`.
