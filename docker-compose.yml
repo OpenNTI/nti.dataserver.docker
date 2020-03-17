@@ -52,12 +52,6 @@ services:
       - ./var/site-assets/:/var/www/public/site-assets/
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
 
-  statsd:
-    image: statsd/statsd
-    container_name: statsd
-    networks: 
-      - app-network
-
 networks:
   app-network:
     driver: bridge
