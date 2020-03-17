@@ -15,8 +15,8 @@ services:
       - 8081
     volumes:
       - ./content/:/srv/content
-      - ./site-assets/:/srv/site-assets
-      - ./data/:/code/data
+      - ./var/site-assets/:/srv/site-assets
+      - ./var/data/:/code/data
       - ./var/caches:/code/var/caches
       - ./var/log:/code/var/log
       - ./var/maildir:/code/var/maildir
@@ -43,13 +43,13 @@ services:
     depends_on:
       - dataserver
     ports:
-      - "80:80"
+      - "8082:80"
     networks:
       - app-network
     volumes:
-      - ./var/log/nginx:/var/log/nginx
-      - ./Library:/var/www/public/content/
-      - ./SiteAssets/:/var/www/public/site-assets/
+      - ./content:/var/www/public/content/
+      - ./var/nginx-logs:/var/log/nginx
+      - ./var/site-assets/:/var/www/public/site-assets/
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
 
   statsd:
@@ -61,7 +61,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  data:
-    driver: local

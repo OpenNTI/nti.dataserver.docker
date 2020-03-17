@@ -35,4 +35,7 @@ RUN --mount=type=ssh ./bin/buildout -c docker.cfg
 COPY ./svn-deauth ./svn-deauth
 RUN ./svn-deauth
 
+RUN rm -rf ./etc 
+COPY ./dataserver ./etc
+
 ENTRYPOINT [ "/code/bin/supervisord", "-n" ]

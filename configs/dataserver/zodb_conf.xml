@@ -1,0 +1,25 @@
+%import zc.zlibstorage
+%import relstorage
+<zodb Users>
+  cache-size 100000
+  database-name Users
+  pool-size 60
+  <zlibstorage Users>
+    <relstorage Users>
+      <sqlite3>
+        driver gevent sqlite3
+        gevent_yield_interval 100
+        data-dir /code/data/relstorages_users_storage
+      </sqlite3>
+      blob-dir /code/data/Users.blobs
+      cache-local-dir /code/var/caches/data_cache/Users.cache
+      cache-local-mb 0
+      cache-prefix Users
+      commit-lock-timeout 60
+      keep-history false
+      name Users
+      pack-gc false
+      shared-blob-dir true
+    </relstorage>
+  </zlibstorage>
+</zodb>

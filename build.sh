@@ -3,14 +3,8 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
 
 mkdir -p ./content/{sites,wiktionary}
-mkdir -p ./site-assets
-mkdir -p ./data
-mkdir -p ./var/{caches,log,maildir}
-
-if [ ! -f ./content/wiktionary/dict.db ]; then
-    curl -L -o ./content/wiktionary/dict.tar.gz https://downloads.nextthought.com/wiktionary.tar.gz
-    tar -xf ./content/wiktionary/dict.tar.gz
-fi
+mkdir -p ./var/{caches,data,log,maildir,site-assets}
+mkdir -p ./var/caches/chameleon_cache
 
 if [ ! -f ./.svnauth ]; then
     read -p "Subversion Username on https://repos.nextthought.com: " user
@@ -20,10 +14,18 @@ if [ ! -f ./.svnauth ]; then
     echo "";
 fi
 
+if [ ! -f ./content/wiktionary/dict.db ]; then
+    (
+        cd ./content;
+        curl -# -o ./wiktionary.tar.bz2 https://downloads.nextthought.com/library/wiktionary.tar.bz2
+        tar -xf ./wiktionary.tar.bz2
+        rm ./wiktionary.tar.bz2
+    )
+fi
+
 ssh-add -K ~/.ssh/id_rsa
 
 docker image build \
-    --no-cache \
     --secret id=svnauth,src=./.svnauth \
     --ssh default \
     ./configs \
