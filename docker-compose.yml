@@ -50,6 +50,7 @@ services:
       - ./var/nginx-logs:/var/log/nginx
       - ./var/site-assets/:/var/www/public/site-assets/
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./configs/nginx/servicesup.html:/var/www/public/index.html
 
 networks:
   app-network:
