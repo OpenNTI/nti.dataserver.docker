@@ -9,7 +9,7 @@ if [[ "$1" == "-force" ]]; then
 fi
 
 mkdir -p ./content/{sites,wiktionary}
-mkdir -p ./var/{caches,data,log,maildir,site-assets}
+mkdir -p ./var/{assets,caches,data,log}
 mkdir -p ./var/caches/chameleon_cache
 
 if [ ! -f ./.svnauth ]; then

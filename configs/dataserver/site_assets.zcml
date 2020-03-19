@@ -7,6 +7,6 @@
 	<include package="nti.app.site" file="meta.zcml" />
 
 	<appsite:siteAssetsFileSystemLocation
-		    directory="/srv/site-assets/"
+		    directory="/srv/assets/"
 			prefix="/site-assets/" />
 </configure>

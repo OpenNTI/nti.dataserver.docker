@@ -14,7 +14,7 @@ services:
       - 8081
     volumes:
       - ./content/:/srv/content
-      - ./var/site-assets/:/srv/site-assets
+      - ./var/assets/:/srv/assets
       - ./var/data/:/code/data
       - ./var/caches:/code/var/caches
       - ./var/log:/code/var/log
@@ -47,14 +47,13 @@ services:
     networks:
       - app-network
     volumes:
-      - ./content:/var/www/public/content/
-      - ./var/nginx-logs:/var/log/nginx
-      - ./var/site-assets/:/var/www/public/site-assets/
+      - ./content:/srv/content/
+      - ./var/assets/:/srv/assets/
+
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
       - ./configs/nginx/certs/localhost.crt:/etc/ssl/certs/localhost.crt
       - ./configs/nginx/certs/localhost.key:/etc/ssl/private/localhost.key
       - ./configs/nginx/status.html:/var/www/public/index.html
-      #- ./configs/nginx/favicon.ico:/var/www/public/favicon.ico
 
 networks:
   app-network:
