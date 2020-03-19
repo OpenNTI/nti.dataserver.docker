@@ -14,15 +14,33 @@
 Open a terminal in the buildout working directory (on this branch) and execute:
 
 ```sh
-./build.sh [-force]
+npm install
 ```
+
+Reinstalling `node_modules` will refresh the image, but will likely have cached layers.
+
+To force update the docker image run:
+
+```sh
+npm run update-image
+```
+
+To cleanup and delete all of this...
+
+```sh
+npm run uninstall
+```
+
+Docker's build cache will survive the tear down. Uninstall and then installing after a successful build of the image will be fast.
 
 ## Startup
 
-Once the container is built, use `docker-compose up` to start services.
+Once the container is built, use `npm start` to start, and `npm stop` to stop.
+
+If you want more control: `docker-compose up` to start services.
 
 ```sh
-# this will consume a terminal tab outputs of
+# this will consume a terminal tab. Outputs of
 # each container print to your console.
 # ctrl+c to stop gracefully
 docker-compose up

@@ -1,0 +1,27 @@
+{
+  "name": "@nti/buildout",
+  "version": "1.0.0",
+  "description": "Buildout for front-end dev",
+  "private": true,
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose stop",
+    "install": "./build.sh",
+    "update-image": "./build.sh -force",
+    "preuninstall": "docker-compose down && rm -rf ./node_modules",
+    "uninstall": "docker image rm nti-dataserver memcached:alpine nginx:alpine redis:alpine python:2 || true",
+    "postuninstall": "./configs/nginx/gen-cert.sh revoke"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NextThought/nti.dataserver-buildout.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/NextThought/nti.dataserver-buildout/issues"
+  },
+  "homepage": "https://github.com/NextThought/nti.dataserver-buildout/blob/docker/readme.md",
+  "dependencies": {
+  }
+}

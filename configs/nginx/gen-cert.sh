@@ -3,6 +3,23 @@ set -e;
 
 cd `dirname $0`;
 
+if [[ "$1" == "revoke" ]]; then
+
+    if [ ! -f ./certs/localhost.pem ]; then 
+        exit 
+    fi
+
+    if [ -e /usr/bin/security ]; then
+        echo "Removing cert from the macOS root trust store"
+        sudo security delete-certificate -c app.localhost /Library/Keychains/System.keychain
+        sudo security remove-trusted-cert -d ./certs/localhost.pem
+    fi
+
+    rm ./certs/localhost.{crt,csr,key,pem}
+    exit;
+fi
+
+
 if [ ! -f ./certs/localhost.pem ]; then
 
     openssl req \
@@ -28,5 +45,4 @@ if [ ! -f ./certs/localhost.pem ]; then
         echo "Adding new cert to the macOS root trust store"
         sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./certs/localhost.pem
     fi
-
 fi

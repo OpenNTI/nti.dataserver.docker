@@ -1,4 +1,5 @@
 .svnauth
-/configs/nginx/certs/*
+/configs/nginx/certs
 /content/
+/node_modules
 /var/
