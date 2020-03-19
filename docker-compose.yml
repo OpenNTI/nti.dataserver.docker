@@ -42,7 +42,8 @@ services:
     depends_on:
       - dataserver
     ports:
-      - "8082:80"
+      - "80:80"
+      - "443:443"
     networks:
       - app-network
     volumes:
@@ -50,7 +51,10 @@ services:
       - ./var/nginx-logs:/var/log/nginx
       - ./var/site-assets/:/var/www/public/site-assets/
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
-      - ./configs/nginx/servicesup.html:/var/www/public/index.html
+      - ./configs/nginx/certs/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./configs/nginx/certs/localhost.key:/etc/ssl/private/localhost.key
+      - ./configs/nginx/status.html:/var/www/public/index.html
+      #- ./configs/nginx/favicon.ico:/var/www/public/favicon.ico
 
 networks:
   app-network:

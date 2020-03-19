@@ -1,0 +1,29 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[req_distinguished_name]
+countryName = US
+countryName_default = US
+stateOrProvinceName = Oklahoma
+stateOrProvinceName_default = Oklahoma
+localityName = Norman
+localityName_default = Norman
+organizationalUnitName = dev
+organizationalUnitName_default = dev
+commonName = app.localhost
+commonName_max = 64
+
+[ v3_req ]
+# Extensions to add to a certificate request
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = app.localhost
+DNS.2 = *.app.localhost
+DNS.3 = app.dev
+DNS.4 = *.app.dev
+DNS.5 = app
+DNS.6 = *.app

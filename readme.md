@@ -9,12 +9,12 @@
 
 ---
 
-## Setup
+## Setup/Updating
 
 Open a terminal in the buildout working directory (on this branch) and execute:
 
 ```sh
-./build.sh
+./build.sh [-force]
 ```
 
 ## Startup
@@ -38,9 +38,9 @@ docker-compose up -d
 docker-compose stop
 ```
 
-Thats it. Enjoy!
+That's it. Enjoy! Open a web browser and go to https://app.localhost.
 
-**_Note:_** The web apps, in dev mode, _will_ proxy requests from their instances to these services (tcp port 8082 - http). HTTPS/SSL will be handled by the dev-server since it will be the front-most listener. When you start a webapp it will tell you where it is listening.
+To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8000. (http) The defaults for various projects will be in flux as we all migrate to this tool chain.
 
 ---
 
@@ -51,3 +51,5 @@ To add content you may put it in the newly created `./content` directory.
 To view logs, look under `./var/log` or `./var/nginx-logs/`. The console output from `docker-compose up` will only have process output streams from each container. (stdout/err) You will still need to look in various service logs to see useful information.
 
 Site data is stored under `./var/data`.
+
+**_SSL:_** Firefox and non-macos environments will need to manually trust the self-signed cert that is generated for 'app.localhost'. (that is, until we have automation for those environments.)

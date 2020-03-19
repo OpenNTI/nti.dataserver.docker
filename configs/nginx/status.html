@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="120" />
+    <title>Service Status</title>
+    <style>
+        /* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        
+        html,body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            color: #787878;
+            background: #343434; 
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        h1, aside {
+            font-weight: 100;
+        }
+
+        @media (prefers-color-scheme: light) {
+            html,body {
+                background: #ddd;
+            }
+        }
+
+        html,body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        main {
+            box-sizing: border-box;
+            margin: auto;
+            padding: 3rem;
+            max-width: min(700px, 100vw);
+            width: 100%;
+        }
+
+        aside {
+            font-size: 0.7em;
+        }
+
+        p > code {
+            display: inline-block;
+            font-family: monospace;
+            white-space: pre;
+        }
+
+        em {
+            font-weight: bold;
+            font-style: italic;
+            text-decoration: underline;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            font-size: 0.6rem;
+            font-weight: 100;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        footer > * {
+            margin: 1rem;
+            flex: 0 0 auto;
+            min-width: 120px;
+        }
+
+        .fail {
+            color: #ff4545;
+        }
+
+        #note {
+            flex: 0 1 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h1>Service Status:</h1>
+        <noscript>
+            <h4>Javascript is disabled.</h4>
+        </noscript>
+        <section>Static files: <em>up!</em></section>
+        <section>Dataserver: <span id="x"></span></section>
+        </ul>
+    </main>
+
+    <footer>
+        <aside id="note">
+            If you are seeing this page, that means the font-end working.
+        </aside>
+    </footer>
+
+    <template id="refresh">
+        <aside>
+            Refreshing in <span id="refresh-counter"></span> seconds
+            <script>
+                (() => {
+                    const refreshInterval = 1000;
+                    let seconds = parseInt(document.querySelector('meta[http-equiv=refresh]').content, 10);
+                    const tick = () => {
+                        document.getElementById('refresh-counter').textContent = seconds;
+                        seconds--;
+                        if (seconds > 0)
+                            setTimeout(tick, refreshInterval);
+                    }
+                    tick();
+                })();
+            </script>
+        </aside>
+    </template>
+
+    <template id="no">
+        <em class="fail">failed (retry in: <span></span>)</em>
+    
+    </template>
+    
+    <template id="yes">
+        <em>up!</em>
+    </template>
+
+    <template id="unknown">
+        <span>
+            <em>unknown</em>
+            <p class="fail">The current domain is not a known dev domain.</p>
+
+            <p>Please use <code>app.localhost</code>.</p>
+            <aside>You may use <code>app.dev</code> or <code>app</code>, 
+                but these domains will require host file edits.</aside>
+        </span>
+    </template>
+
+    <script type="text/javascript" name="checker">
+    const template = x => document.getElementById(x).content.cloneNode(true).firstElementChild;
+
+    (() => {
+        const DEV = /^https?\:\/\/app(\.(dev|localhost))?(\:\d+)?$/i
+        const el = document.getElementById('x')
+
+        async function check() {
+            try {
+                if (!DEV.test(location.origin)) {
+                    el.replaceWith(template('unknown'))
+                    return;
+                }
+
+                const r = await fetch('/dataserver2/logon.ping', {
+                    headers: {
+                        'x-requested-with': 'XMLHttpRequest',
+                        'accept': 'application/json'
+                    }
+                })
+
+                if (!r.ok) throw r
+                await r.json()
+
+                el.replaceWith(template('yes'))
+                
+            } catch (e) {
+                const secs = 15
+                const no = template('no')
+                
+                el.replaceWith(no)         
+                
+                countdown(no, secs, () => {
+                    no.replaceWith(el)
+                    spin()
+                    check()
+                })
+            }
+        }
+
+        function countdown (el, t, fn) {
+            const span = el.querySelector('span')
+
+            const apply = () => {
+                el.dataset.lastUpdate = new Date()
+                if (t <= 0) {
+                    fn()
+                    if (el.parentNode) el.remove()
+                }
+                else span.textContent = t
+            }
+
+            const tick = () => requestAnimationFrame(() => {
+                const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate)
+                const diff = new Date() - (lastUpdate || 0)
+                if (diff >= 1000) {
+                    if (t > 0) t--
+                    apply(t)
+                }
+
+                if (el.parentNode)
+                    tick()
+            })
+
+            apply()
+            tick()
+        }
+
+        function spin () {
+            requestAnimationFrame(() => {
+                const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate)
+                const diff = new Date() - (lastUpdate || 0)
+                if (diff >= 1000) {
+                    let text = el.textContent
+                    if (text.length >= 10) text = ''
+                    el.dataset.lastUpdate = new Date()
+                    el.textContent = text + '.'
+                }
+
+                if (el.parentNode)
+                    spin()
+            })
+        }
+
+        spin()
+        setTimeout(check, 2000);
+    })();
+
+
+    </script>    
+    <script type="text/javascript" name="show-refresh">
+        document.querySelector('footer').prepend(template('refresh'));
+    </script>
+</body>
+</html>

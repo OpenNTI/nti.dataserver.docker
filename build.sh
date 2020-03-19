@@ -1,6 +1,12 @@
 #!/bin/bash
+set -e;
 export COMPOSE_DOCKER_CLI_BUILD=1 
 export DOCKER_BUILDKIT=1
+
+NOCACHE=
+if [[ "$1" == "-force" ]]; then
+    NOCACHE="--no-cache"
+fi
 
 mkdir -p ./content/{sites,wiktionary}
 mkdir -p ./var/{caches,data,log,maildir,site-assets}
@@ -23,9 +29,11 @@ if [ ! -f ./content/wiktionary/dict.db ]; then
     )
 fi
 
+./configs/nginx/gen-cert.sh
+
 ssh-add -K ~/.ssh/id_rsa
 
-docker image build \
+docker image build $NOCACHE \
     --secret id=svnauth,src=./.svnauth \
     --ssh default \
     ./configs \
