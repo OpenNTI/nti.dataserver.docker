@@ -16,9 +16,7 @@ services:
       - ./content/:/srv/content
       - ./var/assets/:/srv/assets
       - ./var/data/:/code/data
-      - ./var/caches:/code/var/caches
-      - ./var/log:/code/var/log
-      - ./var/maildir:/code/var/maildir
+      - ./var:/code/var
 
   memcached:
     image: memcached:alpine
@@ -49,6 +47,8 @@ services:
     volumes:
       - ./content:/srv/content/
       - ./var/assets/:/srv/assets/
+      - ./node_modules/:/srv/node_modules
+      - ./node_modules/@nti/client-sites-default/dist/:/srv/default-assets/site-assets
 
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
       - ./configs/nginx/certs/localhost.crt:/etc/ssl/certs/localhost.crt

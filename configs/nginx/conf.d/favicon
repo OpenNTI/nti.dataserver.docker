@@ -1,0 +1,25 @@
+location = /favicon.ico {
+    try_files $uri @default_favicon;
+}
+
+location @default_favicon {
+    root /srv/assets/default-assets/site-assets/shared;
+    try_files $uri @default_default_favicon;
+    internal;
+}
+
+location @default_default_favicon {
+    root /srv/default-assets/site-assets/shared;
+    internal;
+}
+ 
+ location @default_favicon {
+	root /srv/assets/default-assets/site-assets/shared;
+	try_files $uri @default_default_favicon;
+	internal;
+}
+
+location @default_default_favicon {
+	root /srv/default-assets/site-assets/shared;
+	internal;
+}

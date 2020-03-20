@@ -1,0 +1,20 @@
+
+location /site-assets/ {
+	alias /srv/assets/;
+	try_files $uri @default_site_assets;
+}
+
+location @default_site_assets {
+	root /srv/assets/default-assets;
+	try_files $uri @default_default_site_assets;
+	internal;
+}
+
+location @default_default_site_assets {
+	root /srv/default-assets;
+	internal;
+}
+
+location /vendor/ {
+	alias /srv/node_modules/@nti/lib-vendor/vendor/;
+}

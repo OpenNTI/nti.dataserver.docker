@@ -23,5 +23,8 @@
   },
   "homepage": "https://github.com/NextThought/nti.dataserver-buildout/blob/docker/readme.md",
   "dependencies": {
+    "@nti/client-sites-default": "^1.1.0",
+    "@nti/environment-support": "^2018.1.0",
+    "@nti/lib-vendor": "^2018.0.0"
   }
 }

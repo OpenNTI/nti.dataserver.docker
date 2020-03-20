@@ -1,0 +1,5 @@
+
+location ~* ^/dataserver2/ {
+	proxy_set_header Host $host;
+	proxy_pass http://dataserver:8081;
+}

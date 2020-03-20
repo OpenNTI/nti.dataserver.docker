@@ -3,13 +3,14 @@ set -e;
 export COMPOSE_DOCKER_CLI_BUILD=1 
 export DOCKER_BUILDKIT=1
 
-NOCACHE=
+NOCACHE=""
 if [[ "$1" == "-force" ]]; then
     NOCACHE="--no-cache"
 fi
 
 mkdir -p ./content/{sites,wiktionary}
-mkdir -p ./var/{assets,caches,data,log}
+mkdir -p ./var/{data,log}
+mkdir -p ./var/assets/default-assets/site-assets/shared
 mkdir -p ./var/caches/chameleon_cache
 
 if [ ! -f ./.svnauth ]; then
@@ -33,9 +34,9 @@ fi
 
 ssh-add -K ~/.ssh/id_rsa
 
+# --squash # still behind experimental flag
 docker image build $NOCACHE \
     --secret id=svnauth,src=./.svnauth \
     --ssh default \
     ./configs \
     -t nti-dataserver
-# --squash # still behind experimental flag
