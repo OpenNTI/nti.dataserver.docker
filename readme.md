@@ -58,7 +58,15 @@ docker-compose stop
 
 That's it. Enjoy! Open a web browser and go to https://app.localhost.
 
-To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8000. (http) The defaults for various projects will be in flux as we all migrate to this tool chain.
+To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8083. (http) The defaults for various projects will be in flux as we all migrate to this tool chain.
+
+### Why tcp8083?
+
+Reasons. 😜
+
+Just kidding!
+
+The original buildout listened on tcp8083 for web/mobile apps. To be compatible with the non-containerized environments, and to prevent project churn, we will leave the port that we expect to be the same. This also keeps traditional ports free for side projects to run side-by-side.
 
 ---
 
@@ -70,4 +78,4 @@ To view logs, look under `./var/log` or `./var/nginx-logs/`. The console output 
 
 Site data is stored under `./var/data`.
 
-**_SSL:_** Firefox and non-macos environments will need to manually trust the self-signed cert that is generated for 'app.localhost'. (that is, until we have automation for those environments.)
+**_SSL:_** Firefox and non-macOS environments will need to manually trust the self-signed cert that is generated for 'app.localhost'. (that is, until we have automation for those environments.)

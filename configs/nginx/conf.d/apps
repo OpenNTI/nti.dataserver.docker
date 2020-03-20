@@ -19,5 +19,5 @@ location / {
 
 location @host {
     proxy_set_header Host $host;
-    proxy_pass http://host.docker.internal:8000;
+    proxy_pass http://host.docker.internal:8083;
 }
