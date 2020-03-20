@@ -74,7 +74,7 @@ The original buildout listened on tcp8083 for web/mobile apps. To be compatible 
 
 To add content you may put it in the newly created `./content` directory.
 
-To view logs, look under `./var/log` or `./var/nginx-logs/`. The console output from `docker-compose up` will only have process output streams from each container. (stdout/err) You will still need to look in various service logs to see useful information.
+To view service logs, look under `./var/log` or `docker logs -f <container-name>`. The console output from `docker-compose up` will only have process output streams from each container. (stdout/err) You will still need to look in various service logs to see useful information.
 
 Site data is stored under `./var/data`.
 
