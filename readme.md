@@ -58,7 +58,7 @@ docker-compose stop
 
 That's it. Enjoy! Open a web browser and go to https://app.localhost.
 
-To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8083. (http) The defaults for various projects will be in flux as we all migrate to this tool chain.
+To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8083. (http)
 
 ### Why tcp8083?
 
