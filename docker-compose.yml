@@ -50,10 +50,9 @@ services:
       - ./node_modules/:/srv/node_modules
       - ./node_modules/@nti/client-sites-default/dist/:/srv/default-assets/site-assets
 
-      - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
-      - ./configs/nginx/certs/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./configs/nginx/certs/localhost.key:/etc/ssl/private/localhost.key
       - ./configs/nginx/status.html:/var/www/public/index.html
+      - ./configs/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./configs/nginx/certs/:/var/run/nti-dev/
 
 networks:
   app-network:
