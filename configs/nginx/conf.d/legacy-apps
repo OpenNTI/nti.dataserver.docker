@@ -1,0 +1,27 @@
+##### Legacy web app rules ####
+
+    location = /app/resources/strings/strings.js {
+        return 301 $uri_scheme://$host:$server_port/app/resources/locales/en/LC_MESSAGES/NextThoughtWebApp.js;
+    }
+
+    location /app/resources/css/site.css {
+        return 301 $uri_scheme://$host/site-assets/webapp/site.css;
+    }
+
+    location /app/resources/strings/site.js {
+        return 301 $uri_scheme://$host/site-assets/webapp/strings.js;
+    }
+
+    location = /app/resources/images/favicon.ico {
+        return 301 $uri_scheme://$host/favicon.ico;
+    }
+
+##### Legacy mobile app rules ####
+
+    location = /mobile/resources/css/sites/current/site.css {
+        return 301 $uri_scheme://$host:$server_port/site-assets/mobileapp/site.css;
+    }
+
+    location = /mobile/resources/images/favicon.ico {
+        return 301 $uri_scheme://$host/favicon.ico;
+    }

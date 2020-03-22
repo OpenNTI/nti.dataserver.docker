@@ -1,0 +1,11 @@
+location = /login/resources/css/site.css {
+    return 301 $uri_scheme://$host/site-assets/loginapp/site.css;
+}
+
+location = /login/resources/strings/site.js {
+    return 301 $uri_scheme://$host/site-assets/loginapp/strings.js;
+}
+
+location = /login/resources/favicon.ico {
+    return 301 $uri_scheme://$host/favicon.ico;
+}
