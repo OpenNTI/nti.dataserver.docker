@@ -2,8 +2,11 @@ location = /robots.txt {
     alias /srv/node_modules/@nti/environment-support/dist/robots.txt;
 }
 
-location @error {
-    return 404;
+location = /loginsuccess {
+    # On a successful login, the login app will redirect
+    # here by default. We then redirect to the app; this
+    # keeps the coupling minimal
+    return 302 $uri_scheme://$host/app/;
 }
 
 error_page 404 /404.html;
