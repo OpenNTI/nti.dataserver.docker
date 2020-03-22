@@ -20,6 +20,10 @@
             font-weight: 100;
         }
 
+        hr {
+            border: 0.5px dashed currentColor;
+        }
+
         @media (prefers-color-scheme: light) {
             html,body {
                 background: #ddd;
@@ -76,8 +80,16 @@
             color: #ff4545;
         }
 
+        .down {
+            color: #ffad45;
+        }
+
         #note {
             flex: 0 1 400px;
+        }
+
+        span[slot] {
+            display: none;
         }
     </style>
 </head>
@@ -88,38 +100,49 @@
         <noscript>
             <h4>Javascript is disabled.</h4>
         </noscript>
-        <section>Static files: <em>up!</em></section>
-        <section>Dataserver: <span id="x"></span></section>
+        <check-status url="/favicon.ico" delay=1>
+            <span slot="name">Static files</span>
+        </check-status>
+        <check-status url="/dataserver2/logon.ping" delay=2000>
+            <span slot="name">Dataserver</span>
+        </check-status>
+        <hr/>
+        <check-status url="/app/" delay=3000>
+            <span slot="name">app</span>
+        </check-status>
+        <check-status url="/login/" delay=3000>
+            <span slot="name">login</span>
+        </check-status>
+        <check-status url="/mobile/" delay=3000>
+            <span slot="name">mobile</span>
+        </check-status>
         </ul>
     </main>
 
     <footer>
+        <app-refresh></app-refresh>
         <aside id="note">
             If you are seeing this page, that means the font-end working.
         </aside>
     </footer>
 
+    <template id="check">
+        <style>
+            ::slotted(span[slot]) {
+                display: inline !important;
+            }
+        </style>
+        <section><slot name="name"></slot>: <span counter></span></section>
+    </template>
+
     <template id="refresh">
         <aside>
-            Refreshing in <span id="refresh-counter"></span> seconds
-            <script>
-                (() => {
-                    const refreshInterval = 1000;
-                    let seconds = parseInt(document.querySelector('meta[http-equiv=refresh]').content, 10);
-                    const tick = () => {
-                        document.getElementById('refresh-counter').textContent = seconds;
-                        seconds--;
-                        if (seconds > 0)
-                            setTimeout(tick, refreshInterval);
-                    }
-                    tick();
-                })();
-            </script>
+            Refreshing in <span></span> seconds
         </aside>
     </template>
 
     <template id="no">
-        <em class="fail">failed (retry in: <span></span>)</em>
+        <em class="down">down <span>(retry in: <span></span>)</span></em>
     
     </template>
     
@@ -139,97 +162,166 @@
     </template>
 
     <script type="text/javascript" name="checker">
-    const template = x => document.getElementById(x).content.cloneNode(true).firstElementChild;
+    const template = x => document.getElementById(x).content.cloneNode(true);
+    const DEV = /^https?\:\/\/app(\.(dev|localhost))?(\:\d+)?$/i
 
-    (() => {
-        const DEV = /^https?\:\/\/app(\.(dev|localhost))?(\:\d+)?$/i
-        const el = document.getElementById('x')
+    customElements.define('check-status',
+        class CheckStatus extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'});
+                this.shadowRoot.appendChild(document.querySelector('style').cloneNode(true));
+                this.shadowRoot.appendChild(template('check'));
+                this.counter = this.shadowRoot.querySelector('span[counter]');
+                this.template_unknown = template('unknown');
+                this.template_yes = template('yes');
+                this.template_no = template('no').firstElementChild;
+                this.retries = 0;
+                this.delay = parseInt(this.getAttribute('delay'), 10) || 2000;
+            }
 
-        async function check() {
-            try {
-                if (!DEV.test(location.origin)) {
-                    el.replaceWith(template('unknown'))
-                    return;
+            connectedCallback() {
+                if (this.getAttribute('url')) {
+                    this.spin();
+                    setTimeout(this.check, this.delay);
+                } else {
+                    this.counter.replaceWith(this.template_yes);
                 }
+            }
 
-                const r = await fetch('/dataserver2/logon.ping', {
-                    headers: {
-                        'x-requested-with': 'XMLHttpRequest',
-                        'accept': 'application/json'
+            disconnectedCallback() {
+                cancelAnimationFrame(this.nextSpin);
+                cancelAnimationFrame(this.nextTick);
+            }
+
+            check = async () => {
+                try {
+                    if (!DEV.test(location.origin)) {
+                        el.replaceWith(this.template_unknown);
+                        return;
                     }
+
+                    const url = this.getAttribute('url');
+                    const headers = {};
+
+                    if (/\/dataserver2\//.test(url)) {
+                        Object.assign(headers, {
+                            'x-requested-with': 'XMLHttpRequest',
+                            'accept': 'application/json'
+                        });
+                    }
+
+                    const r = await fetch(url, {
+                        headers,
+                        // redirect: 'manual'
+                    });
+
+                    if (!r.ok) throw r;
+                    await r.blob();
+
+                    this.counter.replaceWith(this.template_yes);
+                    
+                } catch (e) {
+
+                    const secs = 15;
+                    const no = this.template_no;
+                    
+                    this.counter.replaceWith(no);
+                    
+                    if (this.retries > 5 || e.status < 500) {
+                        const e = this.shadowRoot.querySelector('.down');
+                        e.classList.remove('down');
+                        e.classList.add('fail');
+                        this.shadowRoot.querySelector('span').remove();
+                        return;
+                    }
+
+                    this.countdown(no, secs, () => {
+                        this.retries++;
+                        no.replaceWith(this.counter);
+                        this.spin();
+                        this.check();
+                    })
+                }
+            }
+
+            countdown = (el, t, fn) => {
+                const span = el.querySelector('span > span');
+
+                const apply = () => {
+                    el.dataset.lastUpdate = new Date();
+                    if (t <= 0) {
+                        fn();
+                        if (el.parentNode) el.remove();
+                    }
+                    else span.textContent = `${t}${this.retries ? ', attempts: '+this.retries: ''}`;
+                }
+
+                const tick = () => this.nextTick = requestAnimationFrame(() => {
+                    const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate);
+                    const diff = new Date() - (lastUpdate || 0);
+                    if (diff >= 1000) {
+                        if (t > 0) t--;
+                        apply(t);
+                    }
+
+                    if (el.parentNode)
+                        tick();
                 })
 
-                if (!r.ok) throw r
-                await r.json()
+                apply();
+                tick();
+            }
 
-                el.replaceWith(template('yes'))
-                
-            } catch (e) {
-                const secs = 15
-                const no = template('no')
-                
-                el.replaceWith(no)         
-                
-                countdown(no, secs, () => {
-                    no.replaceWith(el)
-                    spin()
-                    check()
+            spin = () => {
+                const el = this.counter;
+                this.nextSpin = requestAnimationFrame(() => {
+                    const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate)
+                    const diff = new Date() - (lastUpdate || 0)
+                    if (diff >= 1000) {
+                        let text = el.textContent
+                        if (text.length >= 10) text = ''
+                        el.dataset.lastUpdate = new Date()
+                        el.textContent = text + '.'
+                    }
+
+                    if (el.parentNode)
+                        this.spin()
                 })
             }
+
         }
+    );
+    </script>
 
-        function countdown (el, t, fn) {
-            const span = el.querySelector('span')
-
-            const apply = () => {
-                el.dataset.lastUpdate = new Date()
-                if (t <= 0) {
-                    fn()
-                    if (el.parentNode) el.remove()
-                }
-                else span.textContent = t
-            }
-
-            const tick = () => requestAnimationFrame(() => {
-                const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate)
-                const diff = new Date() - (lastUpdate || 0)
-                if (diff >= 1000) {
-                    if (t > 0) t--
-                    apply(t)
-                }
-
-                if (el.parentNode)
-                    tick()
-            })
-
-            apply()
-            tick()
-        }
-
-        function spin () {
-            requestAnimationFrame(() => {
-                const lastUpdate = el.dataset.lastUpdate && new Date(el.dataset.lastUpdate)
-                const diff = new Date() - (lastUpdate || 0)
-                if (diff >= 1000) {
-                    let text = el.textContent
-                    if (text.length >= 10) text = ''
-                    el.dataset.lastUpdate = new Date()
-                    el.textContent = text + '.'
-                }
-
-                if (el.parentNode)
-                    spin()
-            })
-        }
-
-        spin()
-        setTimeout(check, 2000);
-    })();
-
-
-    </script>    
     <script type="text/javascript" name="show-refresh">
-        document.querySelector('footer').prepend(template('refresh'));
+       customElements.define('app-refresh',
+       class AppRefresh extends HTMLElement {
+            constructor() {
+                super();
+                this.appendChild(
+                    template('refresh')
+                );
+
+                this.refreshInterval = 1000;
+                this.counter = this.querySelector('span');
+                this.seconds = parseInt(document.querySelector('meta[http-equiv=refresh]').content, 10);
+            }
+            
+            connectedCallback() {
+                this.tick();
+            }
+
+            disconnectedCallback() {
+                clearTimeout(this.nextTick);
+            }
+
+            tick = () => {
+                this.counter.textContent = this.seconds--;
+                if (this.seconds > 0)
+                    this.nextTick = setTimeout(this.tick, this.refreshInterval);
+            }
+        });
     </script>
 </body>
 </html>
