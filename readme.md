@@ -82,7 +82,7 @@ Site data is stored under `./var/data`.
 
 ## Troubleshooting
 
-If you have errors with ssh keys, or with docker/compose, make sure you are using Docker Desktop 19.03.8 (that is what I've tested this on)
+If you have errors with ssh keys, or with docker/compose, make sure you are using Docker Desktop 2.2.0.4 (engine v19.03.8) (that is what I've tested this on)
 
 ```sh
 $ docker version
