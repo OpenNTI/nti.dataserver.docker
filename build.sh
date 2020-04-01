@@ -32,7 +32,11 @@ fi
 
 ./configs/nginx/gen-cert.sh
 
-ssh-add -K ~/.ssh/id_rsa
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    ssh-add -K ~/.ssh/id_rsa
+else
+    ssh-add ~/.ssh/id_rsa
+fi
 
 # --squash # still behind experimental flag
 docker image build $NOCACHE \
