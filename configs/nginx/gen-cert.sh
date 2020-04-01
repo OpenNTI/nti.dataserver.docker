@@ -9,10 +9,13 @@ if [[ "$1" == "revoke" ]]; then
         exit 
     fi
 
-    if [ -e /usr/bin/security ]; then
+    if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "Removing cert from the macOS root trust store"
         sudo security delete-certificate -c app.localhost /Library/Keychains/System.keychain
         sudo security remove-trusted-cert -d ./certs/localhost.pem
+    elif command -v update-ca-trust &> /dev/null; then
+        sudo rm /etc/pki/ca-trust/source/anchors/app.localhost.crt
+        sudo update-ca-trust
     fi
 
     rm ./certs/localhost.{crt,csr,key,pem}
@@ -41,8 +44,11 @@ if [ ! -f ./certs/localhost.pem ]; then
 
     openssl x509 -in ./certs/localhost.crt -outform PEM -out ./certs/localhost.pem
 
-    if [ -e /usr/bin/security ]; then
+    if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "Adding new cert to the macOS root trust store"
         sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./certs/localhost.pem
+    elif command -v update-ca-trust &> /dev/null; then
+        sudo cp ./certs/localhost.crt /etc/pki/ca-trust/source/anchors/app.localhost.crt
+        sudo update-ca-trust
     fi
 fi

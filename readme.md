@@ -85,7 +85,7 @@ Site data is stored under `./var/data`.
 If you have errors with ssh keys, or with docker/compose, make sure you are using Docker Desktop 2.2.0.4 (engine v19.03.8) (that is what I've tested this on)
 
 ```sh
-$ docker version
+(macos) $ docker version
 
 Client: Docker Engine - Community
  Version:           19.03.8
@@ -114,4 +114,65 @@ Server: Docker Engine - Community
  docker-init:
   Version:          0.18.0
   GitCommit:        fec3683
+```
+
+```sh
+(fedora 31) $ docker version
+
+Client: Docker Engine - Community
+ Version:           19.03.8
+ API version:       1.40
+ Go version:        go1.12.17
+ Git commit:        afacb8b7f0
+ Built:             Wed Mar 11 01:27:05 2020
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.8
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.12.17
+  Git commit:       afacb8b7f0
+  Built:            Wed Mar 11 01:25:01 2020
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.2.13
+  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429
+ runc:
+  Version:          1.0.0-rc10
+  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+
+```
+
+On linux, you will want to use the latest version from docker. I recommend reading their script first before piping to `sh`.
+
+```sh
+curl -fsSL https://get.docker.com | sh
+
+# allow your user to exec docker commands w/o sudo
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+```
+
+On Fedora 31, I had a minor stumble getting docker to work without `sudo`, I also had to change the mode on the `docker.sock`:
+
+```sh
+sudo chmod 666 /var/run/docker.sock
+```
+
+and since Fedora 31 is using Cgroups v2, had to switch to v1: (until docker updates) 
+
+```
+sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+```
+
+If `grubby` isn't installed:
+
+```
+sudo dnf -y install grubby
 ```
