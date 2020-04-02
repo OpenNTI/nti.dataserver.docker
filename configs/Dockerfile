@@ -21,9 +21,8 @@ COPY ./svn-preauth ./svn-preauth
 RUN --mount=type=secret,id=svnauth ./svn-preauth $(cat /run/secrets/svnauth)
 
 # Always accept github host key...
-RUN mkdir -p /root/.ssh/ \
-    && touch /root/.ssh/known_hosts \
-    && ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN mkdir -p $HOME/.ssh/ \
+	&& echo "Host *\nStrictHostKeyChecking=no" > $HOME/.ssh/config
 
 RUN --mount=type=ssh git clone --depth=1 -b development git@github.com:NextThought/nti.dataserver-buildout.git /code
 WORKDIR /code
