@@ -56,11 +56,11 @@ docker-compose up -d
 docker-compose stop
 ```
 
-That's it. Enjoy! Open a web browser and go to https://app.localhost.
+That's it. Enjoy! Open a web browser and go to <https://app.localhost>.
 
 To attach a web app (login/app/mobile), simply make sure the dev server is listening on tcp8083. (http)
 
-### Why tcp8083?
+### Why tcp8083
 
 Reasons. 😜
 
@@ -165,7 +165,7 @@ On Fedora 31, I had a minor stumble getting docker to work without `sudo`, I als
 sudo chmod 666 /var/run/docker.sock
 ```
 
-and since Fedora 31 is using Cgroups v2, had to switch to v1: (until docker updates) 
+and since Fedora 31 is using Cgroups v2, had to switch to v1: (until docker updates)
 
 ```
 sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
