@@ -11,7 +11,7 @@ ENV VIRTUAL_ENV /usr/local
 #     bash git subversion openssh \
 #     build-base libffi-dev openssl-dev mariadb-connector-c-dev libxslt-dev yaml-cpp-dev python2-dev
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update && apt-get -y upgrade
 RUN pip install --upgrade pip setuptools
 
 # Make Subversion authenticate w/ the legacy repo so buildout can download 
