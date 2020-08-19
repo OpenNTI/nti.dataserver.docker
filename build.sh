@@ -36,6 +36,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     ssh-add -K ~/.ssh/id_rsa
 else
     ssh-add ~/.ssh/id_rsa
+    # SELinux blocks mounting local volumees, this allows it.
+    # sudo chcon -Rt svirt_sandbox_file_t .
 fi
 
 # --squash # still behind experimental flag
