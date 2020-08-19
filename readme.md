@@ -149,10 +149,11 @@ Server: Docker Engine - Community
 
 ```
 
-On linux, you will want to use the latest version from docker. I recommend reading their script first before piping to `sh`.
+On linux, you will want to use the the moby-engine (think Chromium vs Chrome). Moby is Docker -- the main development project, which later gets branded as Docker.
 
 ```sh
-curl -fsSL https://get.docker.com | sh
+sudo dnf install moby-engine docker-compose
+sudo systemctl enable docker
 
 # allow your user to exec docker commands w/o sudo
 sudo groupadd docker
@@ -167,12 +168,25 @@ sudo chmod 666 /var/run/docker.sock
 
 and since Fedora 31 is using Cgroups v2, had to switch to v1: (until docker updates)
 
-```
+```sh
 sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
 ```
 
 If `grubby` isn't installed:
 
-```
+```sh
 sudo dnf -y install grubby
+```
+
+If network connections do not work, you can either turn off `firewalld`:
+
+```sh
+sudo systemctl disable firewalld
+```
+
+or poke holes into it for docker:
+
+```sh
+sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
 ```
