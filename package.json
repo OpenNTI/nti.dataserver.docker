@@ -9,7 +9,7 @@
     "install": "./build.sh",
     "update-image": "./build.sh -force",
     "preuninstall": "docker-compose down && rm -rf ./node_modules",
-    "uninstall": "docker image rm nti-dataserver memcached:alpine nginx:alpine redis:alpine python:2 || true",
+    "uninstall": "docker image rm nti-dataserver || true",
     "postuninstall": "./configs/nginx/gen-cert.sh revoke"
   },
   "repository": {
