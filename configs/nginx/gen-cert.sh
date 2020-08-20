@@ -11,8 +11,10 @@ if [[ "$1" == "revoke" ]]; then
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "Removing cert from the macOS root trust store"
-        sudo security delete-certificate -c app.localhost /Library/Keychains/System.keychain
-        sudo security remove-trusted-cert -d ./certs/localhost.pem
+        # security find-certificate -c "app.localhost" -a -Z | \
+        #     sudo awk '/SHA-1/{system("security delete-certificate -Z "$NF)}'
+        sudo security delete-certificate -c app.localhost /Library/Keychains/System.keychain || true
+        sudo security remove-trusted-cert -d ./certs/localhost.pem || true
     elif command -v update-ca-trust &> /dev/null; then
         sudo rm /etc/pki/ca-trust/source/anchors/app.localhost.crt
         sudo update-ca-trust
