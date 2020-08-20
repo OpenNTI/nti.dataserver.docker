@@ -190,3 +190,20 @@ or poke holes into it for docker:
 sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
 sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
 ```
+
+
+# macOS *.localhost:
+
+```sh
+brew install dnsmasq
+echo 'address=/.localhost/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
+echo 'port=53' >> $(brew --prefix)/etc/dnsmasq.conf
+sudo mkdir -p /usr/local/var/run/dnsmasq
+sudo mkdir -p /usr/local/etc/dnsmasq.d
+sudo brew services start dnsmasq
+
+sudo mkdir -p /etc/resolver
+sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/localhost'
+
+ping app.localhost
+```
