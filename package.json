@@ -4,7 +4,7 @@
   "description": "Buildout for front-end dev",
   "private": true,
   "scripts": {
-    "start": "docker-compose up -d",
+    "start": "docker-compose up -d && node ./configs/start-msg.js",
     "stop": "docker-compose stop",
     "install": "./build.sh",
     "update-image": "./build.sh -force",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@nti/client-sites-default": "^1.1.0",
     "@nti/environment-support": "^2018.1.0",
-    "@nti/lib-vendor": "^2018.0.0"
+    "@nti/lib-vendor": "^2018.0.0",
+    "chalk": "^4.1.0"
   }
 }

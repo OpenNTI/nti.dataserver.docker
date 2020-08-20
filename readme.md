@@ -191,8 +191,7 @@ sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
 sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
 ```
 
-
-# macOS *.localhost:
+## macOS *.localhost
 
 ```sh
 brew install dnsmasq
