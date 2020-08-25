@@ -45,6 +45,7 @@ if [ ! -f ./certs/localhost.pem ]; then
         -extfile certs/localhost.cnf
 
     openssl x509 -in ./certs/localhost.crt -outform PEM -out ./certs/localhost.pem
+	chmod +r ./certs/localhost.key
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "Adding new cert to the macOS root trust store"
