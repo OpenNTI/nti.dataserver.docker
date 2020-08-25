@@ -5,8 +5,8 @@ cd `dirname $0`;
 
 if [[ "$1" == "revoke" ]]; then
 
-    if [ ! -f ./certs/localhost.pem ]; then 
-        exit 
+    if [ ! -f ./certs/localhost.pem ]; then
+        exit
     fi
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
