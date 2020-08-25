@@ -193,6 +193,8 @@ sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
 
 ## macOS *.localhost
 
+This assumes homebrew is installed.
+
 ```sh
 brew install dnsmasq
 echo 'address=/.localhost/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
@@ -205,4 +207,16 @@ sudo mkdir -p /etc/resolver
 sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/localhost'
 
 ping app.localhost
+```
+
+## Getting a shell into the server's container
+
+```sh
+docker exec -it nti.dataserver /bin/bash
+```
+
+## Creating a special user
+
+```sh
+docker exec -it nti.dataserver /bin/sh -c ./bin/nti_create_user --email admin@nextthought.com [username] [password]
 ```
