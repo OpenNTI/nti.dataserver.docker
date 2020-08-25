@@ -4,7 +4,7 @@ services:
     # This image does not exist on docker hub, nor any other registry...
     # must be built locally using the build script.
     image: nti-dataserver:latest
-    container_name: dataserver
+    container_name: nti.dataserver
     depends_on:
       - "memcached"
       - "redis"
@@ -20,7 +20,7 @@ services:
 
   memcached:
     image: memcached:alpine
-    # container_name: memcached
+    container_name: nti.memcached
     networks:
       - app-network
     expose:
@@ -28,7 +28,7 @@ services:
 
   redis:
     image: redis:alpine
-    # container_name: redis
+    container_name: nti.redis
     networks:
       - app-network
     sysctls:
@@ -36,7 +36,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    # container_name: nginx
+    container_name: nti.nginx
     depends_on:
       - dataserver
     ports:
