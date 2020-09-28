@@ -215,8 +215,14 @@ ping app.localhost
 docker exec -it nti.dataserver /bin/bash
 ```
 
-## Creating a special user
+## Enable the admin user
 
 ```sh
-docker exec -it nti.dataserver /bin/sh -c ./bin/nti_create_user --email admin@nextthought.com [username] [password]
+docker exec -it nti.dataserver /bin/sh -c "./nti_set_password admin@nextthought.com"
+```
+
+## Creating a user
+
+```sh
+docker exec -it nti.dataserver /bin/sh -c "./bin/nti_create_user [username] [password]"
 ```
