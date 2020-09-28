@@ -22,8 +22,8 @@ location / {
 
 location @host {
     proxy_set_header Host $host;
-    # proxy_set_header X-Forwarded-Host $host;
-    # proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
     # proxy_pass http://host.docker.internal:8083;
     proxy_pass http://172.20.0.1:8083;
 }
