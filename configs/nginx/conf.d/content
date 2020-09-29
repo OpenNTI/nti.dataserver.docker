@@ -7,7 +7,7 @@ location /content/ {
 }
 
 location = /_ops/identify {
-	proxy_pass http://dataserver/_ops/identify;
+	proxy_pass http://dataserver:8081/_ops/identify;
 	proxy_set_header Connection "";
 	proxy_http_version 1.1;
 	proxy_pass_request_body off;
