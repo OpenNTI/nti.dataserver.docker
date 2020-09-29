@@ -86,7 +86,7 @@
 			flex: 0 1 400px;
 		}
 
-		span[slot] {
+		[slot] {
 			display: none;
 		}
     </style>
@@ -106,13 +106,13 @@
         </check-status>
         <hr/>
         <check-status url="/app/" delay=3000>
-            <span slot="name">app</span>
+            <a slot="name">app</a>
         </check-status>
         <check-status url="/login/" delay=3000>
-            <span slot="name">login</span>
+            <a slot="name">login</a>
         </check-status>
         <check-status url="/mobile/" delay=3000>
-            <span slot="name">mobile</span>
+            <a slot="name">mobile</a>
         </check-status>
         </ul>
     </main>
@@ -126,8 +126,10 @@
 
     <template id="check">
         <style>
-			::slotted(span[slot]) {
+			::slotted([slot]) {
 				display: inline !important;
+				text-decoration: none;
+				color: #787878;
 			}
         </style>
         <section><slot name="name"></slot>: <span counter></span></section>
@@ -168,8 +170,9 @@
                 super();
                 this.attachShadow({mode: 'open'});
                 this.shadowRoot.appendChild(document.querySelector('style').cloneNode(true));
-                this.shadowRoot.appendChild(template('check'));
-                this.counter = this.shadowRoot.querySelector('span[counter]');
+				this.shadowRoot.appendChild(template('check'));
+				this.label = this.querySelector('[slot=name]');
+				this.counter = this.shadowRoot.querySelector('span[counter]');
                 this.template_unknown = template('unknown');
                 this.template_yes = template('yes');
                 this.template_no = template('no').firstElementChild;
@@ -216,8 +219,8 @@
                     if (!r.ok) throw r;
                     await r.blob();
 
-                    this.counter.replaceWith(this.template_yes);
-
+					this.counter.replaceWith(this.template_yes);
+					this.label.setAttribute('href', url);
                 } catch (e) {
 
                     const secs = 15;
