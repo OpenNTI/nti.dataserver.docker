@@ -5,6 +5,6 @@
 			xmlns:solr="http://nextthought.com/ntp/solr">
 
 	<include package="nti.solr" file="meta.zcml" />
-	<solr:registerSOLR url="http://localhost:8983/solr" />
+	<solr:registerSOLR url="http://nti.solr:8983/solr" />
 
 </configure>

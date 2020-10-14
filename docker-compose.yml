@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 services:
   dataserver:
     # This image does not exist on docker hub, nor any other registry...
@@ -8,6 +8,7 @@ services:
     depends_on:
       - "memcached"
       - "redis"
+      - "solr"
     networks:
       - app-network
     expose:
@@ -53,6 +54,17 @@ services:
       - ./configs/nginx/status.html:/var/www/public/index.html:ro,z
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z
       - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z
+
+  solr:
+    image: solr:7
+    container_name: nti.solr
+    networks:
+      - app-network
+    ports:
+      - "8983:8983"
+    volumes:
+      # - ./configs/solr/conf/:/opt/solr/server/solr/mycores/nti/conf/:ro,z
+      - ./var/solr:/opt/solr/server/solr/mycores:rw,z
 
 networks:
   app-network:
