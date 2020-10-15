@@ -63,7 +63,6 @@ services:
     ports:
       - "8983:8983"
     volumes:
-      # - ./configs/solr/conf/:/opt/solr/server/solr/mycores/nti/conf/:ro,z
       - ./var/solr:/opt/solr/server/solr/mycores:rw,z
 
 networks:
