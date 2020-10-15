@@ -12,10 +12,6 @@
         return 301 /site-assets/webapp/strings.js;
     }
 
-    location = /app/resources/images/loading.gif {
-        return 301 /site-assets/shared/loading.gif;
-    }
-
     location = /app/resources/images/favicon.ico {
         return 301 /favicon.ico;
     }
