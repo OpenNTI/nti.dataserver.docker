@@ -7,7 +7,8 @@ NOCACHE=""
 if [[ "$1" == "-force" ]]; then
     NOCACHE="--no-cache"
 	# see solr comment at the bottom as to why this needs `sudo`
-	sudo rm -rf ./var/solr
+	# We're dropping just the conf, not data
+	sudo rm -rf ./var/solr/nti/conf
 fi
 
 mkdir -p ./content/{sites,wiktionary}
@@ -50,11 +51,17 @@ docker image build $NOCACHE \
     -t nti-dataserver
 
 #setup host side of solr container
-if [ ! -d ./var/solr/nti ]; then
+if [ ! -d ./var/solr/nti/conf ]; then
 	mkdir -p ./var/solr/nti
-	echo 'name=nti' > ./var/solr/nti/core.properties
+	if [ ! -f ./var/solr/nti/core.properties ]; then
+		echo 'name=nti' > ./var/solr/nti/core.properties
+	fi
 
-	TMP=`date "+%Y%m%d%k%M%s"`;
+	# See note below as to why we need to take ownership.
+	# This will allow us to update the config without destroying data.
+	sudo chown -R $(id -u):$(id -g) ./var/solr/nti/
+
+	TMP=$(date +%s);
 	ID=`docker create -ti --name nti.temp-$TMP nti-dataserver:latest bash`
 	docker cp $ID:/code/sources/nti.solr/conf ./var/solr/nti/conf
 	docker rm -f $ID
