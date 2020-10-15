@@ -1,15 +1,9 @@
 # syntax=docker/dockerfile:1.0.0-experimental
 
-# FROM python:2-alpine
 FROM python:2
 EXPOSE 8081
 ENV PYTHONUNBUFFERED 1
 ENV VIRTUAL_ENV /usr/local
-
-# RUN apk update && apk upgrade && \
-#     apk add --no-cache \
-#     bash git subversion openssh \
-#     build-base libffi-dev openssl-dev mariadb-connector-c-dev libxslt-dev yaml-cpp-dev python2-dev
 
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install pdf2svg pngcrush texlive-extra-utils -y
