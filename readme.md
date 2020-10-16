@@ -82,7 +82,7 @@ Site data is stored under `./var/data`.
 
 ## Troubleshooting
 
-If you have errors with ssh keys, or with docker/compose, make sure you are using Docker Desktop 2.2.0.4 (engine v19.03.8) (that is what I've tested this on)
+If you have errors with ssh keys, or with docker/compose, make sure you are using docker engine v19.03.8 or newer.
 
 ```sh
 (macos) $ docker version
@@ -116,39 +116,6 @@ Server: Docker Engine - Community
   GitCommit:        fec3683
 ```
 
-```sh
-(fedora 31) $ docker version
-
-Client: Docker Engine - Community
- Version:           19.03.8
- API version:       1.40
- Go version:        go1.12.17
- Git commit:        afacb8b7f0
- Built:             Wed Mar 11 01:27:05 2020
- OS/Arch:           linux/amd64
- Experimental:      false
-
-Server: Docker Engine - Community
- Engine:
-  Version:          19.03.8
-  API version:      1.40 (minimum version 1.12)
-  Go version:       go1.12.17
-  Git commit:       afacb8b7f0
-  Built:            Wed Mar 11 01:25:01 2020
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.2.13
-  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429
- runc:
-  Version:          1.0.0-rc10
-  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
- docker-init:
-  Version:          0.18.0
-  GitCommit:        fec3683
-
-```
-
 On linux, you will want to use the the moby-engine (think Chromium vs Chrome). Moby is Docker -- the main development project, which later gets branded as Docker.
 
 ```sh
@@ -160,31 +127,7 @@ sudo groupadd docker
 sudo usermod -aG docker ${USER}
 ```
 
-On Fedora 31, I had a minor stumble getting docker to work without `sudo`, I also had to change the mode on the `docker.sock`:
-
-```sh
-sudo chmod 666 /var/run/docker.sock
-```
-
-and since Fedora 31 is using Cgroups v2, had to switch to v1: (until docker updates)
-
-```sh
-sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-```
-
-If `grubby` isn't installed:
-
-```sh
-sudo dnf -y install grubby
-```
-
-If network connections do not work, you can either turn off `firewalld`:
-
-```sh
-sudo systemctl disable firewalld
-```
-
-or poke holes into it for docker:
+If network connections do not work:
 
 ```sh
 sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
