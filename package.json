@@ -7,6 +7,7 @@
     "start": "docker-compose up -d && node ./configs/start-msg.js",
     "stop": "docker-compose stop",
     "install": "./build.sh",
+    "preupdate-image": "docker-compose stop",
     "update-image": "./build.sh -force",
     "preuninstall": "docker-compose down && rm -rf ./node_modules",
     "uninstall": "docker image rm nti-dataserver || true",
