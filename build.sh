@@ -6,9 +6,14 @@ export DOCKER_BUILDKIT=1
 NOCACHE=""
 if [[ "$1" == "-force" ]]; then
     NOCACHE="--no-cache"
-	# see solr comment at the bottom as to why this needs `sudo`
-	# We're dropping just the conf, not data
-	sudo rm -rf ./var/solr/nti/conf
+
+	if [[ "$OSTYPE" != "darwin"* ]]; then
+		# see solr comment at the bottom as to why this needs `sudo`
+		# We're dropping just the conf, not data
+		sudo rm -rf ./var/solr/nti/conf
+	else
+		rm -rf ./var/solr/nti/conf
+	fi
 fi
 
 mkdir -p ./content/{sites,wiktionary}
@@ -59,17 +64,20 @@ if [ ! -d ./var/solr/nti/conf ]; then
 
 	# See note below as to why we need to take ownership.
 	# This will allow us to update the config without destroying data.
-	sudo chown -R $(id -u):$(id -g) ./var/solr/nti/
+	[[ "$OSTYPE" != "darwin"* ]] && sudo chown -R $(id -u): ./var/solr/nti/
 
 	TMP=$(date +%s);
 	ID=`docker create -ti --name nti.temp-$TMP nti-dataserver:latest bash`
 	docker cp $ID:/code/sources/nti.solr/conf ./var/solr/nti/conf
 	docker rm -f $ID
 
-	# Solr's container makes solr run on their own normal user, it has an id of 8983.
-	# Docker's bind settings apply to the "owner"... which is the default user, and
-	# Solr changed it... and strangely docker echos the host's owner:group ids into
-	# the container... so instead of fixing this in the docker-compose/docker-command...
-	# we have to patch it here :(
-	sudo chown -R 8983:8983 ./var/solr
+	if [[ "$OSTYPE" != "darwin"* ]]; then
+		# Solr's container makes solr run on their own normal user, it has an id of 8983.
+		# Docker's bind settings apply to the "owner"... which is the default user, and
+		# Solr changed it... and strangely docker echos the host's owner:group ids into
+		# the container... so instead of fixing this in the docker-compose/docker-command...
+		# we have to patch it here :(
+		#	 --Seems to only apply to Linux... macOS breaks if we do this.
+		sudo chown -R 8983:8983 ./var/solr
+	fi
 fi
