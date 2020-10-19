@@ -51,6 +51,7 @@ services:
       - ./node_modules/:/srv/node_modules:ro,z
       - ./node_modules/@nti/client-sites-default/dist/:/srv/default-assets/site-assets:ro,z
 
+      - ./configs/nginx/50x.html:/var/www/public/50x.html:ro,z
       - ./configs/nginx/status.html:/var/www/public/index.html:ro,z
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z
       - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z
