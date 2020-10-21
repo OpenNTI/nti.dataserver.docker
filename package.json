@@ -4,7 +4,7 @@
   "description": "Buildout for front-end dev",
   "private": true,
   "scripts": {
-    "start": "docker-compose up -d && node ./configs/start-msg.js",
+    "start": "node ./configs/start-check.js && docker-compose up -d && node ./configs/start-msg.js",
     "stop": "docker-compose stop",
     "install": "./build.sh",
     "preupdate-image": "docker-compose stop",
