@@ -161,7 +161,7 @@ docker exec -it nti.dataserver /bin/bash
 ## Enable the admin user
 
 ```sh
-docker exec -it nti.dataserver /bin/sh -c "./nti_set_password admin@nextthought.com"
+docker exec -it nti.dataserver /bin/sh -c "./bin/nti_set_password admin@nextthought.com"
 ```
 
 ## Creating a user
