@@ -11,7 +11,8 @@
     "update-image": "./build.sh -force",
     "preuninstall": "docker-compose down && rm -rf ./node_modules",
     "uninstall": "docker image rm nti-dataserver || true",
-    "postuninstall": "./configs/nginx/gen-cert.sh revoke"
+    "postuninstall": "./configs/nginx/gen-cert.sh revoke",
+    "reset": "npm run uninstall && rm -rf content var"
   },
   "repository": {
     "type": "git",
