@@ -136,7 +136,7 @@ sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
 
 ## macOS *.localhost
 
-This assumes homebrew is installed.
+This assumes homebrew is installed. This is pretty much [this post](https://firxworx.com/blog/it-devops/sysadmin/using-dnsmasq-on-macos-to-setup-a-local-domain-for-development/) with `.test` swapped with `.localhost`.
 
 ```sh
 brew install dnsmasq
@@ -149,6 +149,12 @@ sudo brew services start dnsmasq
 sudo mkdir -p /etc/resolver
 sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/localhost'
 
+# Flush your DNS cache:
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+# check config
+scutil --dns
+# test resolve
 ping app.localhost
 ```
 
