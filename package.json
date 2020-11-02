@@ -29,5 +29,8 @@
     "@nti/environment-support": "^2018.1.0",
     "@nti/lib-vendor": "^2018.0.0",
     "chalk": "^4.1.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended"
   }
 }

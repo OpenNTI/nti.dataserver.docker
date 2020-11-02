@@ -177,7 +177,8 @@
                 this.template_yes = template('yes');
                 this.template_no = template('no').firstElementChild;
                 this.retries = 0;
-                this.delay = parseInt(this.getAttribute('delay'), 10) || 2000;
+				this.delay = parseInt(this.getAttribute('delay'), 10) || 2000;
+				this.label.setAttribute('href', this.getAttribute('url'));
             }
 
             connectedCallback() {
@@ -220,7 +221,6 @@
                     await r.blob();
 
 					this.counter.replaceWith(this.template_yes);
-					this.label.setAttribute('href', url);
                 } catch (e) {
 
                     const secs = 15;
