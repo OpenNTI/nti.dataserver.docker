@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,6 +92,7 @@
 		}
     </style>
 </head>
+
 <body>
 
     <main>
@@ -104,7 +106,7 @@
         <check-status url="/dataserver2/logon.ping" delay=2000>
             <span slot="name">Dataserver</span>
         </check-status>
-        <hr/>
+		<hr />
         <check-status url="/app/" delay=3000>
             <a slot="name">app</a>
         </check-status>
@@ -132,7 +134,9 @@
 				color: #787878;
 			}
         </style>
-        <section><slot name="name"></slot>: <span counter></span></section>
+		<section>
+			<slot name="name"></slot>: <span counter></span>
+		</section>
     </template>
 
     <template id="refresh">
@@ -168,7 +172,7 @@
         class CheckStatus extends HTMLElement {
             constructor() {
                 super();
-                this.attachShadow({mode: 'open'});
+					this.attachShadow({ mode: 'open' });
                 this.shadowRoot.appendChild(document.querySelector('style').cloneNode(true));
 				this.shadowRoot.appendChild(template('check'));
 				this.label = this.querySelector('[slot=name]');
@@ -254,7 +258,7 @@
                         fn();
                         if (el.parentNode) el.remove();
                     }
-                    else span.textContent = `${t}${this.retries ? ', attempts: '+this.retries: ''}`;
+						else span.textContent = `${t}${this.retries ? ', attempts: ' + this.retries : ''}`;
                 }
 
                 const tick = () => this.nextTick = requestAnimationFrame(() => {
@@ -324,4 +328,5 @@
         });
     </script>
 </body>
+
 </html>
