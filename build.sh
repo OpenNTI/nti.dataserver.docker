@@ -3,9 +3,14 @@ set -e;
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
 
+if [ ! -f ./configs/updated ]; then
+	date > ./configs/updated
+fi
+
 NOCACHE=""
 if [[ "$1" == "-force" ]]; then
-    NOCACHE="--no-cache"
+	date > ./configs/updated
+    # NOCACHE="--no-cache"
 
 	if [[ "$OSTYPE" != "darwin"* ]]; then
 		# see solr comment at the bottom as to why this needs `sudo`

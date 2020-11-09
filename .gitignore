@@ -1,5 +1,6 @@
 .svnauth
 /configs/nginx/certs
+/configs/updated
 /content/
 /node_modules
 /var/
