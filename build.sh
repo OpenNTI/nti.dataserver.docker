@@ -69,14 +69,14 @@ if [ ! -d ./var/solr/nti/conf ]; then
 
 	# See note below as to why we need to take ownership.
 	# This will allow us to update the config without destroying data.
-	[[ "$OSTYPE" != "darwin"* ]] && sudo chown -R $(id -u): ./var/solr/nti/
+	[[ "$OSTYPE" == "linux"* ]] && sudo chown -R $(id -u):$(id -g) ./var/solr/nti/
 
 	TMP=$(date +%s);
 	ID=`docker create -ti --name nti.temp-$TMP nti-dataserver:latest bash`
 	docker cp $ID:/code/sources/nti.solr/conf ./var/solr/nti/conf
 	docker rm -f $ID
 
-	if [[ "$OSTYPE" != "darwin"* ]]; then
+	if [[ "$OSTYPE" == "linux"* ]]; then
 		# Solr's container makes solr run on their own normal user, it has an id of 8983.
 		# Docker's bind settings apply to the "owner"... which is the default user, and
 		# Solr changed it... and strangely docker echos the host's owner:group ids into
