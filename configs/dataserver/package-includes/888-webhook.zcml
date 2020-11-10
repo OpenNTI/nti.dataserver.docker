@@ -1,0 +1,20 @@
+<configure
+xmlns="http://namespaces.zope.org/zope"
+    xmlns:webhooks="http://nextthought.com/ntp/webhooks">
+
+   <exclude package="nti.webhooks" file="permissions.zcml" />
+   <include package="nti.webhooks" />
+
+   <subscriber
+        for="nti.coremetadata.interfaces.IUser zope.lifecycleevent.interfaces.IObjectAddedEvent"
+        handler="nti.webhooks.subscribers.dispatch_webhook_event"
+        trusted="true"
+        />
+
+   <webhooks:persistentSubscription
+site_path="/nti.dataserver/++etc++hostsites/s00000000000000000000000000000000"
+for="nti.coremetadata.interfaces.IUser"
+when="zope.lifecycleevent.interfaces.IObjectAddedEvent"
+to="https://example.com/hooks/user/created" />
+
+</configure>
