@@ -63,7 +63,7 @@ if [ ! -d ./var/solr/nti/conf ]; then
 
 	# See note below as to why we need to take ownership.
 	# This will allow us to update the config without destroying data.
-	sudo chown -R $(id -u):$(id -g) ./var/solr/nti/
+	sudo chown -R $(id -u):$(id -g) ./var/solr
 
 	# make sure our core.properties file exists
 	if [ ! -f ./var/solr/nti/core.properties ]; then
