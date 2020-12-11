@@ -14,10 +14,10 @@ services:
     expose:
       - 8081
     volumes:
-      - ./content/:/srv/content:rw,z
-      - ./var/assets/:/srv/assets:rw,z
-      - ./var/data/:/code/data:rw,z
-      - ./var:/code/var:rw,z
+      - ./content/:/srv/content:rw,z,delegated
+      - ./var/assets/:/srv/assets:rw,z,delegated
+      - ./var/data/:/code/data:rw,z,delegated
+      - ./var:/code/var:rw,z,delegated
 
   memcached:
     image: memcached:alpine
@@ -46,15 +46,15 @@ services:
     networks:
       - app-network
     volumes:
-      - ./content:/srv/content/:ro,z
-      - ./var/assets/:/srv/assets/:ro,z
-      - ./node_modules/:/srv/node_modules:ro,z
-      - ./node_modules/@nti/client-sites-default/dist/:/srv/default-assets/site-assets:ro,z
+      - ./content:/srv/content/:ro,z,cached
+      - ./var/assets/:/srv/assets/:ro,z,cached
+      - ./node_modules/:/srv/node_modules:ro,z,cached
+      - ./node_modules/@nti/client-sites-default/dist/:/srv/default-assets/site-assets:ro,z,cached
 
-      - ./configs/nginx/50x.html:/var/www/public/50x.html:ro,z
-      - ./configs/nginx/status.html:/var/www/public/index.html:ro,z
-      - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z
-      - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z
+      - ./configs/nginx/50x.html:/var/www/public/50x.html:ro,z,cached
+      - ./configs/nginx/status.html:/var/www/public/index.html:ro,z,cached
+      - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z,cached
+      - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z,cached
 
   solr:
     image: solr:7
@@ -64,7 +64,7 @@ services:
     ports:
       - "8983:8983"
     volumes:
-      - ./var/solr:/opt/solr/server/solr/mycores:rw,z
+      - ./var/solr:/opt/solr/server/solr/mycores:rw,z,delegated
 
 networks:
   app-network:
