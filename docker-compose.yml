@@ -55,6 +55,7 @@ services:
       - ./configs/nginx/status.html:/var/www/public/index.html:ro,z,cached
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z,cached
       - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z,cached
+      - ./configs/nginx/00-run-as-root.sh:/docker-entrypoint.d/00-run-as-root.sh:ro,z,cached
 
   solr:
     image: solr:7
