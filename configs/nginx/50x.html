@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="60" />
-    <title>Service Error</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="refresh" content="60" />
+	<title>Service Error</title>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+		rel="stylesheet">
+	<style>
 		:root {
 			--background: #343434;
 		}
@@ -17,7 +20,8 @@
 			}
 		}
 
-		html,body {
+		html,
+		body {
 			background: var(--background);
 			color: #787878;
 			font-family: 'Roboto', sans-serif;
@@ -33,7 +37,8 @@
 			display: none;
 		}
 
-		h1, aside {
+		h1,
+		aside {
 			font-weight: 100;
 		}
 
@@ -57,10 +62,12 @@
 			display: inline-block;
 			font-family: monospace;
 			font-size: smaller;
-			white-space: pre;
+			white-space: pre-wrap;
 			border: 1px solid currentColor;
 			border-radius: 5px;
 			padding: 0 0.2em;
+			max-width: 100%;
+			overflow-wrap: break-word;
 		}
 
 		em {
@@ -73,9 +80,9 @@
 			float: right;
 			font-size: small;
 		}
-
-    </style>
+	</style>
 </head>
+
 <body>
 
 	<main>
@@ -83,14 +90,15 @@
 			<code title="status code" class="status"><!--# echo var="status" default="" --></code>
 			Service Error
 		</h1>
-		<hr/>
+		<hr />
 
 		<!--# if expr="$path = /^\/(dataserver2|content|site-assets|vendor)/" -->
 		<section>
 			<h3>Uh oh!</h3>
 			<p>Something has gone wrong in the containers.</p>
 			<p>Inspect the logs of each container as well as the logs in
-				<code>&lt;nti.dataserver.docker&gt;/var/log/</code></p>
+				<code>&lt;nti.dataserver.docker&gt;/var/log/</code>
+			</p>
 		</section>
 		<!--#else -->
 		<section>
@@ -107,4 +115,5 @@
 		<!--# endif -->
 	</main>
 </body>
+
 </html>
