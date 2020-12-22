@@ -175,3 +175,51 @@ docker exec -it nti.dataserver /bin/sh -c "./bin/nti_set_password admin@nextthou
 ```sh
 docker exec -it nti.dataserver /bin/sh -c "./bin/nti_create_user [username] [password]"
 ```
+
+## Adding a custom domain (DDNS)
+
+Add your domain name to the cert config `configs/nginx/certs/localhost.cnf` under `[alt names]`:
+
+```sh
+[alt_names]
+DNS.1 = app.localhost
+DNS.2 = *.app.localhost
+DNS.3 = app.dev
+DNS.4 = *.app.dev
+DNS.5 = app
+DNS.6 = *.app
+# add your domain name
+DNS.7 = mydomain.example.net
+```
+
+Revoke the existing cert (if applicable) and regenerate it:
+
+```sh
+./configs/nginx/gen-cert.sh revoke
+./configs/nginx/gen-cert.sh
+```
+
+Add a corresponding site entry to `configs/dataserver/package-includes/777-nti.app.analytics.zcml`:
+
+```xml
+<sites:registerSiteMapping
+  source_site_name="mydomain.example.net"
+  target_site_name="s00000000000000000000000000000000"
+/>
+```
+
+Rebuild the docker image to pick up the above change:
+
+```sh
+npm run update-image
+```
+
+Start the container
+
+```sh
+npm start
+```
+
+---
+
+
