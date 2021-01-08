@@ -1,17 +1,20 @@
 version: '3.2'
 services:
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./conf.d/:/etc/nginx/conf.d/:ro,consistent,z # nginx config
-      - ./data/certbot/conf:/etc/letsencrypt:consistent,z
-      - ./data/certbot/www:/var/www/certbot:consistent,z
+#  nginx:
+#    image: nginx:alpine
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - ./conf.d/:/etc/nginx/conf.d/:ro,consistent,z # nginx config
+#      - ./data/certbot/conf:/etc/letsencrypt:consistent,z
+#      - ./data/certbot/www:/var/www/certbot:consistent,z
 
   certbot:
     image: certbot/certbot
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt:consistent,z
       - ./data/certbot/www:/var/www/certbot:consistent,z
