@@ -26,20 +26,21 @@ if [ -z $domain ]; then
 fi
 
 cert_name="dev-cert"
+#cert_name="$domain"
 base_path="./configs/nginx/ddns"
 data_path="$base_path/data/certbot"
 path="/etc/letsencrypt/live/$cert_name"
 docker_compose="$base_path/docker-compose.yml"
 mkdir -p "$data_path/conf/live/$cert_name"
 
-docker-compose -f $docker_compose run --rm --entrypoint "\
-  openssl req -x509 -nodes -newkey rsa:4096 -days 1\
-    -keyout '$path/privkey.pem' \
-    -out '$path/fullchain.pem' \
-    -subj '/CN=localhost'" certbot
+#docker-compose -f $docker_compose run --rm --entrypoint "\
+#  openssl req -x509 -nodes -newkey rsa:4096 -days 1\
+#    -keyout '$path/privkey.pem' \
+#    -out '$path/fullchain.pem' \
+#    -subj '/CN=localhost'" certbot
 
 #echo "### Starting nginx ..."
-#docker-compose -f $docker_compose up --force-recreate -d nginx
+#docker-compose -f $docker_compose up --force-recreate -d certbot
 #echo
 #
 #echo "### Deleting dummy certificate for $domain ..."
@@ -50,7 +51,7 @@ docker-compose -f $docker_compose run --rm --entrypoint "\
 #echo
 
 #    --webroot -w /var/www/certbot \
-docker-compose -f $docker_compose run --rm --entrypoint "\
+docker-compose -f $docker_compose run --service-ports --rm --entrypoint "\
   certbot certonly \
     --standalone \
     --staging \
@@ -62,4 +63,4 @@ docker-compose -f $docker_compose run --rm --entrypoint "\
     --no-eff-email \
     --force-renewal" certbot
 
-docker-compose -f $docker_compose down
+#docker-compose -f $docker_compose down
