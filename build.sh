@@ -8,9 +8,26 @@ if [ ! -f ./configs/updated ]; then
 fi
 
 NOCACHE=""
-if [[ "$1" == "-force" ]]; then
+FORCE=false
+
+while test $# -gt 0; do
+	case "$1" in
+		--no-cache)
+			NOCACHE="--no-cache"
+			shift
+		;;
+		-force)
+			FORCE=true
+			shift
+		;;
+		*)
+      		break
+    	;;
+	esac
+done
+
+if $FORCE; then
 	date > ./configs/updated
-    # NOCACHE="--no-cache"
 
 	# see solr comment at the bottom as to why this needs `sudo`
 	# We're dropping just the conf, not data

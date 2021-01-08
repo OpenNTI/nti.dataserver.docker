@@ -19,15 +19,19 @@ RUN --mount=type=secret,id=svnauth ./svn-preauth $(cat /run/secrets/svnauth)
 RUN mkdir -p $HOME/.ssh/ \
 	&& echo "Host *\nStrictHostKeyChecking=no" > $HOME/.ssh/config
 
-# Trigger layer invalidation so we can update with previous layers cached
-COPY ./updated ./updated
-
 RUN --mount=type=ssh git clone --depth=1 -b development git@github.com:NextThought/nti.dataserver-buildout.git /code
 WORKDIR /code
 COPY ./docker.cfg ./docker.cfg
 
 RUN ./bootstrap.sh
 RUN --mount=type=ssh ./bin/buildout -c docker.cfg
+
+# Trigger layer invalidation so we can update with previous layers cached
+COPY ./updated ./updated
+# On initial runs, this will mostlikely no-op, this allows us to reuse the previous cached
+# layers and just update the code. We can run with --no-cache to rebuild the entire image
+# if deps change.
+RUN --mount=type=ssh ./bin/develop update
 
 COPY ./svn-deauth ./svn-deauth
 RUN ./svn-deauth
