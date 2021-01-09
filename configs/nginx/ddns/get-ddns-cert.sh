@@ -25,14 +25,23 @@ if [ -z $domain ]; then
   usage
 fi
 
+
 cert_name="dev-cert"
 #cert_name="$domain"
-base_path="./configs/nginx/ddns"
+
+# script directory one-liner from https://stackoverflow.com/a/246128/636077
+base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+#base_path="./configs/nginx/ddns"
+
 data_path="$base_path/data/certbot"
 path="/etc/letsencrypt/live/$cert_name"
 mkdir -p "$data_path/conf/live/$cert_name"
 
-docker run -p 80:80 --name certbot --rm certbot/certbot \
+docker run \
+  -v $data_path/conf:/etc/letsencrypt:consistent,z \
+  -p 80:80 \
+  --name certbot \
+  --rm certbot/certbot \
   certonly \
     --standalone \
     --staging \
