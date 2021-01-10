@@ -31,7 +31,6 @@ cert_name="dev-cert"
 
 # script directory one-liner from https://stackoverflow.com/a/246128/636077
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-#base_path="./configs/nginx/ddns"
 
 data_path="$base_path/data/certbot"
 path="/etc/letsencrypt/live/$cert_name"
@@ -44,7 +43,6 @@ docker run \
   --rm certbot/certbot \
   certonly \
     --standalone \
-    --staging \
     --cert-name $cert_name \
     --register-unsafely-without-email \
     -d $domain \
