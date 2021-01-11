@@ -1,6 +1,7 @@
 .svnauth
 /configs/nginx/certs
 /configs/nginx/ddns/data
+/configs/nginx/conf.d/ddns*
 /configs/updated
 /content/
 /node_modules
