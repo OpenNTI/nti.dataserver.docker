@@ -185,8 +185,6 @@ Request a cert for your domain by running the command below, replacing `example.
 ./configs/nginx/ddns/get-ddns-cert.sh -d example.org
 ```
 
-Update `configs/nginx/conf.d/my-domain.conf` with your domain name and uncomment it.
-
 Add a corresponding site entry to `configs/dataserver/package-includes/777-nti.app.analytics.zcml`:
 
 ```xml
