@@ -56,6 +56,9 @@ services:
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z,cached
       - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z,cached
 
+      - ./configs/nginx/ddns/data/certbot/conf:/etc/letsencrypt
+      - ./configs/nginx/ddns/data/certbot/www:/var/www/certbot
+
   solr:
     image: solr:7
     container_name: nti.solr
