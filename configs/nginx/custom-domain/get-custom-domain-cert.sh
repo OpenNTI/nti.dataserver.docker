@@ -26,7 +26,7 @@ if [ -z $domain ]; then
 fi
 
 
-cert_name="dev-cert"
+cert_name="custom-domain"
 #cert_name="$domain"
 
 # script directory one-liner from https://stackoverflow.com/a/246128/636077
@@ -36,15 +36,15 @@ data_path="$base_path/data/certbot"
 path="/etc/letsencrypt/live/$cert_name"
 mkdir -p "$data_path/conf/live/$cert_name"
 
-cat <<EOF >"$base_path/../conf.d/ddns-$domain.conf"
+cat <<EOF >"$base_path/../conf.d/custom-domain-$domain.conf"
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
     server_name $domain;
 
-    ssl_certificate /etc/letsencrypt/live/dev-cert/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/dev-cert/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/custom-domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/custom-domain/privkey.pem;
 
     include conf.d/server/root.conf;
 }
