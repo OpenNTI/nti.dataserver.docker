@@ -56,8 +56,8 @@ services:
       - ./configs/nginx/conf.d/:/etc/nginx/conf.d/:ro,z,cached
       - ./configs/nginx/certs/:/var/run/nti-dev/:ro,z,cached
 
-      - ./configs/nginx/ddns/data/certbot/conf:/etc/letsencrypt
-      - ./configs/nginx/ddns/data/certbot/www:/var/www/certbot
+      - ./configs/nginx/custom-domain/data/certbot/conf:/etc/letsencrypt
+      - ./configs/nginx/custom-domain/data/certbot/www:/var/www/certbot
 
   solr:
     image: solr:7
