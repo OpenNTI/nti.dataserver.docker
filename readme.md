@@ -182,7 +182,7 @@ docker exec -it nti.dataserver /bin/sh -c "./bin/nti_create_user [username] [pas
 Request a cert for your domain by running the command below, replacing `example.org` with your domain name.
 
 ```sh
-./configs/nginx/ddns/get-custom-domain-cert.sh -d example.org
+./configs/nginx/custom-domain/get-custom-domain-cert.sh -d example.org
 ```
 
 Add a corresponding site entry to `configs/dataserver/package-includes/777-nti.app.analytics.zcml`:
