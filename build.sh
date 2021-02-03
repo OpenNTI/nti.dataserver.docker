@@ -3,6 +3,17 @@ set -e;
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
 
+if [ "$NTI_SKIP_DOCKER" != "" ]; then
+	echo "NTI_SKIP_DOCKER is set. aborting."
+	exit 0;
+fi
+
+if ! command -v docker > /dev/null; then
+	echo "docker is not on installed or not on the path. aborting."
+	exit 0;
+fi
+
+
 if [ ! -f ./configs/updated ]; then
 	date > ./configs/updated
 fi
