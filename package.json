@@ -12,6 +12,7 @@
     "preuninstall": "docker-compose down && rm -rf ./node_modules",
     "uninstall": "docker image rm nti-dataserver || true",
     "postuninstall": "./configs/nginx/gen-cert.sh revoke",
+    "postinstall": "./postinstall.sh",
     "reset": "npm run uninstall && rm -rf content var"
   },
   "repository": {
