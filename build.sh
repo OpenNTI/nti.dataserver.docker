@@ -27,7 +27,7 @@ while test $# -gt 0; do
 			NOCACHE="--no-cache"
 			shift
 		;;
-		-force)
+		--force)
 			FORCE=true
 			shift
 		;;

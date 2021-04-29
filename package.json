@@ -8,7 +8,7 @@
     "stop": "docker-compose stop",
     "install": "./build.sh",
     "preupdate-image": "docker-compose stop",
-    "update-image": "./build.sh -force",
+    "update-image": "./build.sh --force",
     "preuninstall": "docker-compose down && rm -rf ./node_modules",
     "uninstall": "docker image rm nti-dataserver || true",
     "postuninstall": "./configs/nginx/gen-cert.sh revoke",
