@@ -20,6 +20,9 @@ fi
 
 NOCACHE=""
 FORCE=false
+if [ "$NTI_WORKSPACE_REFRESH" == "true" ]; then
+	FORCE=true
+fi
 
 while test $# -gt 0; do
 	case "$1" in
@@ -38,6 +41,7 @@ while test $# -gt 0; do
 done
 
 if $FORCE; then
+	echo "Forcing code update";
 	date > ./configs/updated
 
 	# see solr comment at the bottom as to why this needs `sudo`
