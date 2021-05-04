@@ -222,7 +222,14 @@ sudo chcon -t container_file_t -u system_u -R -v .
 
 ## macOS \*.localhost
 
-This assumes homebrew is installed. This is pretty much [this post](https://firxworx.com/blog/it-devops/sysadmin/using-dnsmasq-on-macos-to-setup-a-local-domain-for-development/) with `.test` swapped with `.localhost`.
+macOS does not come configured to resolve \*.localhost addresses locally and relies on your router or DNS provider to handle them... thats not fast nor private, so you can install dnsmasq and configure it to do so for you. (These instructions assume homebrew is installed. Also, this is pretty much [this post](https://firxworx.com/blog/it-devops/sysadmin/using-dnsmasq-on-macos-to-setup-a-local-domain-for-development/) with `.test` swapped with `.localhost`.)
+
+> Alternatively, you may skip dnsmasq and simply add `app.localhost` and `nti.ssl.dev.config.share.localhost` to the `/etc/hosts` file, pointing to `::1`(ipv6) and `127.0.0.1`(ipv4).
+>
+> ```ss
+> 127.0.0.1   app.localhost nti.ssl.dev.config.share.localhost
+> ::1         app.localhost nti.ssl.dev.config.share.localhost
+> ```
 
 ```sh
 brew install dnsmasq
