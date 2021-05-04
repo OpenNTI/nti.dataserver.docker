@@ -231,6 +231,8 @@ macOS does not come configured to resolve \*.localhost addresses locally and rel
 > ::1         app.localhost nti.ssl.dev.config.share.localhost
 > ```
 
+To install and configure dnsmasq:
+
 ```sh
 brew install dnsmasq
 echo 'address=/.localhost/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
