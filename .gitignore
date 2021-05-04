@@ -1,3 +1,5 @@
+*.pp
+*.te
 .svnauth
 /configs/nginx/certs
 /configs/nginx/custom-domain/data
