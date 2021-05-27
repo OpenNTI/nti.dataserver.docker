@@ -2,11 +2,11 @@
 
 ## Prerequisites
 
--   Install [Docker Desktop](https://www.docker.com/products/docker-desktop), or your distribution's docker packages.
-    -   macOS and Windows hosts should increase docker's default 2GB RAM allocation to a minimum of 4GB.
--   Setup SSH/Git credentials:
-    -   Generate private/public keys if you don't have any
-    -   put your public key in your github account
+- Install [Docker Desktop](https://www.docker.com/products/docker-desktop), or your distribution's docker packages.
+  - macOS and Windows hosts should increase docker's default 2GB RAM allocation to a minimum of 4GB.
+- Setup SSH/Git credentials:
+  - Generate private/public keys if you don't have any
+  - put your public key in your github account
 
 ---
 
