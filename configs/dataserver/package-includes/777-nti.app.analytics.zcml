@@ -17,12 +17,12 @@
 	<include package="nti.analytics_database" file="meta.zcml" />
 	<include package="nti.site" file="meta.zcml" />
 
-	<appsite:createBaseComponents bases="nti.appserver.policies.sites.BASEADULT" 
+	<appsite:createBaseComponents bases="nti.appserver.policies.sites.BASEADULT"
 								  name="s00000000000000000000000000000000" />
 
 	<appsite:registerInNamedComponents registry="s00000000000000000000000000000000">
-		<sp:createSitePolicy brand="NextThought Development" 
-							 display_name="NextThought Development" 
+		<sp:createSitePolicy brand="NextThought Development"
+							 display_name="NextThought Development"
 							 com_username="s00000000000000000000000000000000" />
 		<adb:registerAnalyticsDB
 				defaultSQLite="True"
@@ -30,6 +30,7 @@
 				echo="True"
 				autocommit="False" />
 		<ana:registerImmediateProcessingQueue />
+
 
 	</appsite:registerInNamedComponents>
 
@@ -42,5 +43,5 @@
                 target_site_name="s00000000000000000000000000000000" />
 	<sites:registerSiteMapping source_site_name="app.localhost"
                 target_site_name="s00000000000000000000000000000000" />
-	
+
 </configure>
