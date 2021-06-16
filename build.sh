@@ -81,12 +81,14 @@ else
     # sudo chcon -Rt svirt_sandbox_file_t .
 fi
 
+docker image prune -f
 # --squash # still behind experimental flag
 docker image build $NOCACHE \
     --secret id=svnauth,src=./.svnauth \
     --ssh default \
     ./configs \
     -t nti-dataserver
+
 
 #setup host side of solr container
 if [ ! -d ./var/solr/nti/conf ]; then
