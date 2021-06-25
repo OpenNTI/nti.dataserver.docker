@@ -1,0 +1,12 @@
+<!-- -*- mode: nxml -*- -->
+<configure xmlns:appsite="http://nextthought.com/ntp/appsite">
+
+	<include package="nti.app.site" file="meta.zcml" />
+
+	<appsite:registerInNamedComponents registry="s00000000000000000000000000000000">
+
+		<include package="nti.app.sites.deq" file="site_customizations.zcml"/>
+
+	</appsite:registerInNamedComponents>
+
+</configure>
