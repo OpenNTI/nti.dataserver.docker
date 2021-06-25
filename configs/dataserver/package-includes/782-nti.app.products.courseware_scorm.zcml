@@ -1,0 +1,18 @@
+<!-- -*- mode: nxml -*- -->
+<configure   xmlns="http://namespaces.zope.org/zope"
+            xmlns:appsite="http://nextthought.com/ntp/appsite"
+            xmlns:scorm="http://nextthought.com/ntp/scorm">
+
+    <include package="nti.app.site" file="meta.zcml" />
+    <include package="nti.app.products.courseware_scorm" file="meta.zcml" />
+    <include package="nti.app.products.courseware_scorm" />
+
+    <appsite:registerInNamedComponents registry="s00000000000000000000000000000000">
+        <scorm:registerSCORMCloudClient
+                app_id="REXJX936HI"
+				secret_key="DLXzFesY7sLr4dghnIRQN2ItRXP5DZFFmLV1bsAR"
+                service_url="https://cloud.scorm.com/EngineWebServices" />
+
+    </appsite:registerInNamedComponents>
+
+</configure>
