@@ -1,0 +1,22 @@
+<!-- -*- mode: nxml -*- -->
+<configure	xmlns="http://namespaces.zope.org/zope"
+			xmlns:appsite="http://nextthought.com/ntp/appsite"
+			xmlns:sites="http://nextthought.com/sites">
+
+	<include package="nti.app.site" file="meta.zcml" />
+	<include package="nti.site" file="meta.zcml" />
+
+	<appsite:createBaseComponents bases="nti.appserver.policies.sites.BASEADULT"
+								  name="s00000000000000000000000000000000" />
+
+	<utility factory="nti.app.site.subscribers.MostRecentSiteMappingPreferredHostnameProvider"
+		provides="nti.appserver.interfaces.IPreferredAppHostnameProvider" />
+
+	<sites:registerSiteMapping source_site_name="app"
+                target_site_name="s00000000000000000000000000000000" />
+	<sites:registerSiteMapping source_site_name="app.dev"
+                target_site_name="s00000000000000000000000000000000" />
+	<sites:registerSiteMapping source_site_name="app.localhost"
+                target_site_name="s00000000000000000000000000000000" />
+
+</configure>

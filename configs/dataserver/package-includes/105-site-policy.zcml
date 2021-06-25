@@ -1,0 +1,16 @@
+<!-- -*- mode: nxml -*- -->
+<configure	xmlns:appsite="http://nextthought.com/ntp/appsite"
+			xmlns:sp="http://nextthought.com/ntp/sitepolicy">
+
+	<include package="nti.app.site" file="meta.zcml" />
+	<include package="nti.appserver.policies" file="meta.zcml" />
+
+	<appsite:registerInNamedComponents registry="s00000000000000000000000000000000">
+
+		<sp:createSitePolicy brand="NextThought Development"
+							 display_name="NextThought Development"
+							 com_username="s00000000000000000000000000000000" />
+
+	</appsite:registerInNamedComponents>
+
+</configure>
