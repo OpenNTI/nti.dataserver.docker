@@ -14,9 +14,9 @@ if ! command -v docker > /dev/null; then
 fi
 
 
-if [ ! -f ./configs/updated ]; then
+#if [ ! -f ./configs/updated ]; then
 	date > ./configs/updated
-fi
+#fi
 
 NOCACHE=""
 FORCE=false
