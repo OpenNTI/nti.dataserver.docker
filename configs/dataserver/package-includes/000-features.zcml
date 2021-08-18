@@ -2,5 +2,5 @@
 	<meta:provides feature="in-buildout" />
 	<meta:provides feature="forums" />
 	<meta:provides feature="no_avatar" />
-	<meta:provides feature="production_env" />
+	<meta:provides feature="devmode" />
 </configure>
