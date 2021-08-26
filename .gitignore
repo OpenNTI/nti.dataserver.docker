@@ -4,6 +4,7 @@
 /configs/nginx/certs
 /configs/nginx/custom-domain/data
 /configs/nginx/conf.d/custom-domain*
+/configs/origin
 /configs/updated
 /content/
 /node_modules

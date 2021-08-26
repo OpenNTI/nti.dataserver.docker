@@ -14,9 +14,10 @@ if ! command -v docker > /dev/null; then
 fi
 
 
-#if [ ! -f ./configs/updated ]; then
-	date > ./configs/updated
-#fi
+date > ./configs/updated
+if [ ! -f ./configs/origin ]; then
+	date > ./configs/origin
+fi
 
 NOCACHE=""
 FORCE=false
@@ -42,7 +43,7 @@ done
 
 if $FORCE; then
 	echo "Forcing code update";
-	date > ./configs/updated
+	date > ./configs/origin
 
 	# see solr comment at the bottom as to why this needs `sudo`
 	# We're dropping just the conf, not data
