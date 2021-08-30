@@ -74,13 +74,23 @@ fi
 
 ./configs/nginx/gen-cert.sh
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    ssh-add -K ~/.ssh/id_rsa
-else
-    ssh-add ~/.ssh/id_rsa
-    # SELinux blocks mounting local volumees, this allows it.
-    # sudo chcon -Rt svirt_sandbox_file_t .
-fi
+function __load_identity {
+	if [[ "$OSTYPE" == "darwin"* ]]; then
+		ssh-add -K $1
+	else
+		ssh-add $1
+	fi
+}
+
+find ~/.ssh \
+	! -path ~/.ssh \
+	-prune -name 'id_*' \
+	! -name '*.pub' \
+	| while read file; do __load_identity "$file"; done
+
+
+# SELinux blocks mounting local volumees, this allows it.
+# sudo chcon -Rt svirt_sandbox_file_t .
 
 docker image prune -f
 # --squash # still behind experimental flag
