@@ -21,9 +21,9 @@ fi
 
 NOCACHE=""
 FORCE=false
-if [ "$NTI_WORKSPACE_REFRESH" == "true" ]; then
-	FORCE=true
-fi
+# if [ "$NTI_WORKSPACE_REFRESH" == "true" ]; then
+# 	FORCE=true
+# fi
 
 while test $# -gt 0; do
 	case "$1" in
