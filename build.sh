@@ -93,6 +93,7 @@ find ~/.ssh \
 # sudo chcon -Rt svirt_sandbox_file_t .
 
 docker image prune -f
+docker builder prune -f
 # --squash # still behind experimental flag
 docker image build $NOCACHE \
     --secret id=svnauth,src=./.svnauth \
