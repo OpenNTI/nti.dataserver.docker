@@ -44,6 +44,8 @@ Site data is stored under `./var/data`.
 
 **_SSL:_** Firefox and non-macOS environments will need to manually trust the self-signed cert that is generated for 'app.localhost'. (that is, until we have automation for those environments.)
 
+---
+
 ## Starting up
 
 Once the container is built, use `npm start` to start, and `npm stop` to stop.
