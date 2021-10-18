@@ -22,19 +22,33 @@ RUN mkdir -p $HOME/.ssh/ \
 # Trigger layer invalidation so we can update with previous layers cached
 COPY ./origin ./origin
 
-RUN --mount=type=ssh git clone --depth=1 -b development git@github.com:NextThought/nti.dataserver-buildout.git /code
+RUN --mount=type=ssh \
+	git clone --depth=1 -b development git@github.com:NextThought/nti.dataserver-buildout.git /code
+
 WORKDIR /code
+
 COPY ./docker.cfg ./docker.cfg
 
-RUN ./bootstrap.sh
-RUN --mount=type=ssh ./bin/buildout -c docker.cfg
+# TODO: figure out how to bind/mount these dirs such that they can be accessed at runtime
+RUN --mount=type=cache,target=/code/download-cache \
+    # --mount=type=cache,target=/code/eggs \
+	./bootstrap.sh
+
+RUN --mount=type=ssh \
+	--mount=type=cache,target=/code/download-cache \
+    # --mount=type=cache,target=/code/eggs \
+	./bin/buildout -c docker.cfg
 
 # Trigger layer invalidation so we can update with previous layers cached
 COPY ./updated ./updated
+
 # On initial runs, this will mostlikely no-op, this allows us to reuse the previous cached
 # layers and just update the code. We can run with --no-cache to rebuild the entire image
 # if deps change.
-RUN --mount=type=ssh ./bin/develop update
+RUN --mount=type=ssh \
+	--mount=type=cache,target=/code/download-cache \
+    # --mount=type=cache,target=/code/eggs \
+	./bin/develop update
 
 COPY ./svn-deauth ./svn-deauth
 RUN ./svn-deauth
