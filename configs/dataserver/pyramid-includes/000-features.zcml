@@ -1,4 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope" xmlns:meta="http://namespaces.zope.org/meta">
+	<meta:provides feature="segments" />
 	<meta:provides feature="in-buildout" />
 	<meta:provides feature="forums" />
 	<meta:provides feature="no_avatar" />
