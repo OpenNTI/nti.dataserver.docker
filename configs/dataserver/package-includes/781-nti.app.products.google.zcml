@@ -1,0 +1,22 @@
+<!-- -*- mode: nxml -*- -->
+<configure    xmlns="http://namespaces.zope.org/zope"
+            xmlns:i18n="http://namespaces.zope.org/i18n"
+            xmlns:zcml="http://namespaces.zope.org/zcml"
+            xmlns:google="http://nextthought.com/ntp/google"
+            xmlns:oauth="http://nextthought.com/ntp/oauth" >
+
+    <include package="nti.common" file="meta.zcml" />
+    <include package="nti.app.products.google" file="meta.zcml" />
+	<!--
+    <oauth:registerOAuthKeys
+            apiKey="~~OAuthKey~~"
+            secretKey="~~SecretKey~~"
+            id="google" />
+	-->
+
+    <google:registerGoogleAPIKey
+            name="filepicker"
+            appid="APIKeyID"
+            key="AIzaSyD40HaKMirU_sR4RicSRGezciJWK5PC--8"/>
+
+</configure>
