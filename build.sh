@@ -13,6 +13,10 @@ if ! command -v docker > /dev/null; then
 	exit 0;
 fi
 
+if [ ! -f ./.secrets ]; then
+	cp ./configs/secrets.template .secrets;
+fi
+
 
 date > ./configs/updated
 if [ ! -f ./configs/origin ]; then
@@ -96,7 +100,8 @@ docker image prune -f
 docker builder prune -f
 # --squash # still behind experimental flag
 docker image build $NOCACHE \
-    --secret id=svnauth,src=./.svnauth \
+	--secret id=svnauth,src=./.svnauth \
+    --secret id=keys,src=./.secrets \
     --ssh default \
     ./configs \
     -t nti-dataserver

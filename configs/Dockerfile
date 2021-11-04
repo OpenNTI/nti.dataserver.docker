@@ -55,6 +55,7 @@ RUN ./svn-deauth
 
 RUN rm -rf ./etc
 COPY ./dataserver ./etc
+RUN --mount=type=secret,id=keys bash /run/secrets/keys
 RUN touch ./openssl.phantomjs.cnf
 ENV OPENSSL_CONF="/code/openssl.phantomjs.cnf"
 ENTRYPOINT [ "/code/bin/supervisord", "-n" ]
