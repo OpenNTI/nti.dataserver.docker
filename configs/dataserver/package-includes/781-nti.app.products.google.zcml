@@ -7,16 +7,25 @@
 
     <include package="nti.common" file="meta.zcml" />
     <include package="nti.app.products.google" file="meta.zcml" />
-	<!--
+
+	<!-- Dataserver Content Signer -->
+	<oauth:registerContentSigner
+			secret="~~contentSignerSecret~~"
+			salt="~~contentSignerSalt~~" />
+
+	<oauth:registerOAuthService
+		authorization_url="https://oauth.nextthought.com/google/oauth1"
+		id="google"/>
+
+
     <oauth:registerOAuthKeys
-            apiKey="~~OAuthKey~~"
-            secretKey="~~SecretKey~~"
+            apiKey="~~googleOAuthApiKey~~"
+            secretKey="~~googleOAuthApiSecretKey~~"
             id="google" />
-	-->
 
     <google:registerGoogleAPIKey
             name="filepicker"
-            appid="APIKeyID"
-            key="AIzaSyD40HaKMirU_sR4RicSRGezciJWK5PC--8"/>
+            appid="~~googleApiAppId~~"
+            key="~~googleApiKey~~"/>
 
 </configure>

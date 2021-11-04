@@ -7,7 +7,7 @@
 	<include package="nti.app.invitations" file="meta.zcml" />
 
 	<inv:registerInvitationSigner
-				secret="LVIrExg7VD0mOh5ySDkZfgkuYxxVJBI7JWxKD3lwNgA="
-				salt="nti-invitations" />
+				secret="~~invitationSignerSecret~~"
+				salt="~~invitationSignerSalt~~" />
 
 </configure>
