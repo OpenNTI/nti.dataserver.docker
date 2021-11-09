@@ -13,6 +13,17 @@ if ! command -v docker > /dev/null; then
 	exit 0;
 fi
 
+function restoreSELinuxEnforcing {
+	echo 'Restoring SELinux enforcement';
+	sudo setenforce Enforcing
+}
+
+if command -v setenforce > /dev/null && [ $(getenforce) == 'Enforcing' ]; then
+	trap restoreSELinuxEnforcing EXIT
+	echo 'Temporarily disabling SELinux enforcement';
+	sudo setenforce Permissive
+fi
+
 if [ ! -f ./.secrets ]; then
 	cp ./configs/secrets.template .secrets;
 fi
@@ -91,6 +102,8 @@ find ~/.ssh \
 	-prune -name 'id_*' \
 	! -name '*.pub' \
 	| while read file; do __load_identity "$file"; done
+
+
 
 
 # SELinux blocks mounting local volumees, this allows it.
