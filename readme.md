@@ -236,26 +236,32 @@ cat ./audit.log | audit2allow -m "nti_local_dev">nti_local_dev.te
 module nti_local_dev 1.0;
 
 require {
- type container_ro_file_t;
- type container_runtime_t;
  type container_var_lib_t;
- type container_t;
+ type container_runtime_t;
  type container_runtime_tmpfs_t;
- class dir { add_name create map relabelfrom remove_name rename reparent rmdir setattr write };
- class file { append create link open read relabelfrom relabelto rename setattr unlink write };
- class lnk_file { create rename setattr unlink };
+ type unlabeled_t;
+ type user_home_t;
+ type container_t;
+ class file { append create entrypoint execmod execute execute_no_trans ioctl link lock map open read relabelfrom relabelto rename setattr unlink write };
+ class dir { add_name create map read relabelfrom relabelto remove_name rename reparent rmdir setattr write };
+ class lnk_file { create read rename setattr unlink };
  class sock_file write;
  class unix_stream_socket connectto;
 }
 
 #============= container_t ==============
-allow container_t container_ro_file_t:dir { add_name create map relabelfrom remove_name rename reparent rmdir setattr write };
-allow container_t container_ro_file_t:file { append create link relabelfrom relabelto rename setattr unlink write };
-allow container_t container_ro_file_t:lnk_file { create rename setattr unlink };
 allow container_t container_runtime_t:unix_stream_socket connectto;
-allow container_t container_runtime_tmpfs_t:file { open read };
+allow container_t container_runtime_tmpfs_t:file { ioctl open read };
 allow container_t container_var_lib_t:file { open read };
 allow container_t container_var_lib_t:sock_file write;
+allow container_t unlabeled_t:dir { add_name create map read relabelfrom remove_name rename reparent rmdir setattr write };
+allow container_t unlabeled_t:file { append create entrypoint execmod execute execute_no_trans ioctl link lock open read relabelfrom relabelto rename setattr unlink write };
+
+#!!!! This avc can be allowed using the boolean 'domain_can_mmap_files'
+allow container_t unlabeled_t:file map;
+allow container_t unlabeled_t:lnk_file { create read rename setattr unlink };
+allow container_t user_home_t:dir { add_name relabelto remove_name write };
+allow container_t user_home_t:file { create execute execute_no_trans ioctl open read relabelto rename setattr unlink write };
 
 ```
 
